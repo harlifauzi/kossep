@@ -1,38 +1,808 @@
-.App {
-  text-align: center;
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap');
+
+*{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  list-style: none;
+  font-family: 'poppins', sans-serif;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+h1,h2,h3,h4,h5,h6,p{
+  margin: 0px;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+/* App */
+.app-navbar{
+  background-image: linear-gradient(to bottom right, #fcb629, #FDC75B);
 }
 
-.App-header {
-  background-color: #282c34;
+.app-navbar *:focus{
+  outline: none;
+}
+
+.app-navbar h1{
+  margin: 0px;
+}
+
+.app-navbar-logoContainer:hover{
+  cursor: pointer;
+}
+
+.app-navbar img{
+  margin: 0px;
+  height: 39px;
+}
+
+
+/* BuatAkun */
+.buatakun-container{
+  padding: 20px;
+}
+
+.buatakun-form{
+  display: flex;
+  width: 200px;
+  flex-direction: column;
+  margin: 0px auto;
+}
+
+
+/* Masuk */
+.masuk-container {
+  background-image: linear-gradient(to top right, #fcb629, #FDC75B);
   min-height: 100vh;
+  margin: 0;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+}
+
+.masuk-cards {
+  display: flex;
+  width: 70%;
+  height: 700px;
+  min-height: 80vh;
+  margin: 0px auto;
+  border-radius: 12px;
+  background-color: white;
+  box-shadow: 5px 5px 20px 0px rgba(0, 0, 0, 0.5);
+}
+
+.masuk-cards-left {
+  width: 40%;
+  height: 100%;
+  background-color: white;
+  border-radius: 10px 0 0 10px;
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: space-around;
+}
+
+.masuk-cards-left h3{
+  margin: 0px 3.5rem;
+}
+
+
+.masuk-cards-right{
+  background-color: #FDC75B;
+  display: flex;
+  width: 60%;
+  height: 100%;
   justify-content: center;
-  font-size: calc(10px + 2vmin);
+  align-items: center;
+  border-top-left-radius: 600px;
+  border-bottom-left-radius: 300px;
+}
+
+.masuk-cards-right img{
+  width: 95%;
+}
+
+.masuk-cards-left-form {
+  width: 70%;
+  margin: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.masuk-cards-left-form input {
+  border-radius: 200px;
+  padding: 10px 30px;
+  background-color: #f7f7f7;
+  color: #444;
+  border: none;
+  display: block;
+  margin-top: 1rem;
+  width: 100%;
+}
+
+.masuk-cards-left-form input:focus {
+  outline: none;
+}
+
+.masuk-cards-left-form button {
   color: white;
+  background-color: #FDC75B;
+  border: none;
+  padding: 5px;
+  font-family: inherit;
+  border-radius: 10px;
+  font-size: 1rem;
+  display: block;
+  width: 100%;
+  margin: auto;
+  margin-top: 2rem;
 }
 
-.App-link {
-  color: #61dafb;
+.masuk-cards-left-form button:hover{
+  background-color: #fcb629;
+  cursor: pointer;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
+.masuk-cards-left-form button:focus{
+  outline: none;
+}
+
+.masuk-cards-left-link {
+  color: #777;
+}
+
+.masuk-cards-left-link span:hover {
+  color: #FDC75B;
+  cursor: pointer;
+}
+
+@media (max-width:1240px){
+  .masuk-cards-left{
+    width: 50%;
   }
-  to {
-    transform: rotate(360deg);
+  .masuk-cards-right{
+    width: 50%;
   }
+}
+
+@media (max-width:970px){
+  .masuk-cards-left-form button{
+    font-size: 1rem;
+  }
+
+  .masuk-cards-left-link{
+    font-size: 0.8rem;
+  }
+}
+
+@media (max-width:950px) {
+  .masuk-cards-left{
+    width: 100%;
+    border-radius: 10px;
+  }
+  .masuk-cards h1{
+    font-size: 1.5rem;
+    margin-top: 0.5rem;
+  }
+  .masuk-cards-left-form input{
+    margin-top: 0.5rem;
+  }
+  .masuk-cards-right{
+    display: none;
+  }
+}
+
+@media (max-width:550px){
+  .masuk-cards{
+    width: 90%;
+    left: 5%;
+  }
+}
+
+
+/* BuatAkun */
+.buatakun-container {
+  background-image: linear-gradient(to top right, #fcb629, #FDC75B);
+  min-height: 100vh;
+  margin: 0;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+}
+
+.buatakun-cards {
+  display: flex;
+  width: 70%;
+  height: 700px;
+  min-height: 80vh;
+  margin: 0px auto;
+  border-radius: 12px;
+  background-color: white;
+  box-shadow: 5px 5px 20px 0px rgba(0, 0, 0, 0.5);
+}
+
+.buatakun-cards-left {
+  width: 40%;
+  height: 100%;
+  background-color: white;
+  border-radius: 10px 0 0 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-around;
+}
+
+.buatakun-cards-left h3{
+  margin: 0px 3.5rem;
+}
+
+.buatakun-cards-right{
+  background-color: #FDC75B;
+  display: flex;
+  width: 60%;
+  height: 100%;
+  justify-content: center;
+  align-items: center;
+  border-top-left-radius: 600px;
+  border-bottom-left-radius: 300px;
+}
+
+.buatakun-cards-right img{
+  height: 63%;
+}
+
+.buatakun-cards-left-form {
+  width: 70%;
+  margin: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.buatakun-cards-left-form input {
+  border-radius: 200px;
+  padding: 10px 30px;
+  background-color: #f7f7f7;
+  color: #444;
+  border: none;
+  display: block;
+  margin-top: 1rem;
+  width: 100%;
+}
+
+.buatakun-cards-left-form input:focus {
+  outline: none;
+}
+
+.buatakun-cards-left-form button {
+  color: white;
+  background-color: #FDC75B;
+  border: none;
+  padding: 5px;
+  font-family: inherit;
+  border-radius: 10px;
+  font-size: 1rem;
+  display: block;
+  width: 100%;
+  margin: auto;
+  margin-top: 2rem;
+}
+
+.buatakun-cards-left-form button:hover{
+  background-color: #fcb629;
+  cursor: pointer;
+}
+
+.buatakun-cards-left-form button:focus{
+  outline: none;
+}
+
+.buatakun-cards-left-link {
+  color: #777;
+}
+
+.buatakun-cards-left-link span:hover {
+  color: #FDC75B;
+  cursor: pointer;
+}
+
+@media (max-width:1240px){
+  .buatakun-cards-left{
+    width: 50%;
+  }
+  .buatakun-cards-right{
+    width: 50%;
+  }
+}
+
+@media (max-width:970px){
+  .buatakun-cards-left-form button{
+    font-size: 1rem;
+  }
+
+  .buatakun-cards-left-link{
+    font-size: 0.8rem;
+  }
+}
+
+@media (max-width:950px) {
+  .buatakun-cards-left{
+    width: 100%;
+    border-radius: 10px;
+  }
+  .buatakun-cards h1{
+    font-size: 1.5rem;
+    margin-top: 0.5rem;
+  }
+  .buatakun-cards-left-form input{
+    margin-top: 0.5rem;
+  }
+  .buatakun-cards-right{
+    display: none;
+  }
+}
+
+@media (max-width:550px){
+  .buatakun-cards{
+    width: 90%;
+    left: 5%;
+  }
+}
+
+
+/* HalamanUtama */
+.halamanutama-container{
+  display: flex;
+  flex-direction: column;
+  padding: 1rem;
+  background-image: linear-gradient(to top right, #fcb629, #FDC75B);
+  min-height: calc(100vh - 55px);
+}
+
+.halamanutama-banner{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 300px;
+}
+
+.halamanutama-banner img{
+  height: 100%;
+}
+
+.halamanutama-button{
+  display: flex;
+  margin-top: 1rem;
+  justify-content: flex-end;
+}
+
+.halamanutama-button-plus, .halamanutama-button-explore{
+  display: flex;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-color: white;
+  margin-left: 0.5rem;
+}
+
+.halamanutama-button-plus i, .halamanutama-button-explore i{
+  margin: auto;
+  font-size: 1.7rem;
+}
+
+.halamanutama-button-plus, .halamanutama-button-explore:hover{
+  cursor: pointer;
+}
+
+.halamanutama-grid{
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 420px));
+  padding: 10px;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 1rem;
+}
+
+.halamanutama-grid-item{
+  height: 100%;
+}
+
+.halamanutama-grid-item-card{
+  background-color: white;
+  border: 1px solid gainsboro;
+  border-radius: 5px;
+  overflow: hidden;
+  width: 100%;
+}
+
+.halamanutama-grid-item-card img{
+  object-fit: cover;
+  width: 100%;
+  height: 200px;
+}
+
+.halamanutama-grid-item-card img:hover{
+  cursor: pointer;
+}
+
+.halamanutama-grid-item-card-desc{
+  padding: 0.8rem;
+}
+
+.halamanutama-grid-item-card-desc-judul{
+  height: 40px;
+  overflow: hidden;
+}
+
+.halamanutama-grid-item-card-desc-cerita{
+  height: 120px;
+  overflow: hidden;
+}
+
+.halamanutama-grid-item-card-desc-info{
+  display: flex;
+}
+
+.halamanutama-grid-item-card-desc-info div{
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: center;
+  margin-right: 1rem;
+  height: 80px;
+}
+
+.halamanutama-grid-item-card-desc-info div .bx{
+  font-size: 1.5rem;
+}
+
+.halamanutama-grid-item-card-desc-info-chef{
+  margin-left: auto;
+  margin-right: 0px !important;
+}
+
+.halamanutama-grid-item-card-desc-info-chef:hover{
+  cursor: pointer;
+}
+
+@media (max-width:920px){
+  .halamanutama-banner{
+    display: none;
+  }
+}
+
+
+/* HalamanEksplor */
+.halamaneksplor-container{
+  display: flex;
+  flex-direction: column;
+  padding: 1rem;
+  min-height: 100vh;
+  background-image: linear-gradient(to top right, #fcb629, #FDC75B);
+}
+
+.halamaneksplor-banner{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 300px;
+}
+
+.halamaneksplor-banner img{
+  height: 100%;
+}
+
+.halamaneksplor-button{
+  display: flex;
+  margin-top: 1rem;
+}
+
+.halamaneksplor-button-buatresep{
+  margin-right: 0px;
+  margin-left: auto;
+}
+
+.halamaneksplor-grid{
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 420px));
+  padding: 10px;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 1rem;
+}
+
+.halamaneksplor-grid-item{
+  height: 100%;
+}
+
+.halamaneksplor-grid-item-card{
+  background-color: white;
+  border: 1px solid gainsboro;
+  border-radius: 5px;
+  overflow: hidden;
+  width: 100%;
+}
+
+.halamaneksplor-grid-item-card img{
+  object-fit: cover;
+  width: 100%;
+  height: 200px;
+}
+
+.halamaneksplor-grid-item-card img{
+  cursor: pointer;
+}
+
+.halamaneksplor-grid-item-card-desc{
+  padding: 0.8rem;
+}
+
+.halamaneksplor-grid-item-card-desc-judul{
+  height: 40px;
+  overflow: hidden;
+}
+
+.halamaneksplor-grid-item-card-desc-cerita{
+  height: 120px;
+  overflow: hidden;
+}
+
+.halamaneksplor-grid-item-card-desc-info{
+  display: flex;
+}
+
+.halamaneksplor-grid-item-card-desc-info div{
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: center;
+  margin-right: 1rem;
+  height: 80px;
+}
+
+.halamaneksplor-grid-item-card-desc-info div .bx{
+  font-size: 1.5rem;
+}
+
+.halamaneksplor-grid-item-card-desc-info-chef{
+  margin-left: auto;
+  margin-right: 0px !important;
+}
+
+.halamaneksplor-grid-item-card-desc-info-chef{
+  cursor: pointer;
+}
+
+@media (max-width:920px){
+  .halamaneksplor-banner{
+    display: none;
+  }
+}
+
+
+/* BuatResep */
+.buatresep-container{
+  padding: 20px;
+}
+
+.buatresep-form{
+  display: flex;
+  flex-direction: column;
+  max-width: 600px;
+  margin: 0px auto;
+}
+
+.buatresep-form-bahan-itemlist-item, .buatresep-form-langkah-itemlist-item{
+  display: flex;
+  flex-direction: row !important;
+}
+
+
+/* LihatResep */
+.lihatresep-container{
+  padding: 20px;
+}
+
+.lihatresep-form{
+  display: flex;
+  flex-direction: column;
+  max-width: 600px;
+  margin: 0px auto;
+}
+
+
+/* HalamanAkun */
+.halamanakun-container{
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+}
+
+.halamanakun-userinfo{
+  display: flex;
+  min-width: 440px;
+  justify-content: space-between;
+  align-items: center;
+  margin: 0px auto;
+}
+
+.halamanakun-userinfo p{
+  margin: auto 0px;
+}
+
+.halamanakun-userinfo-popularity{
+  display: flex;
+  flex-direction: row;
+  width: 300px;
+  justify-content: space-between;
+  text-align: center;
+}
+
+.halamanakun-userinfo-popularity div{
+  border-left: 1px solid black;
+}
+
+.halamanakun-grid{
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 420px));
+  padding: 10px;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 1rem;
+}
+
+.halamanakun-grid-item{
+  height: 100%;
+}
+
+.halamanakun-grid-item-card{
+  background-color: white;
+  border: 1px solid gainsboro;
+  border-radius: 5px;
+  overflow: hidden;
+  width: 100%;
+}
+
+.halamanakun-grid-item-card img{
+  object-fit: cover;
+  width: 100%;
+  height: 200px;
+}
+
+.halamanakun-grid-item-card img:hover{
+  cursor: pointer;
+}
+
+.halamanakun-grid-item-card-desc{
+  padding: 0.8rem;
+}
+
+.halamanakun-grid-item-card-desc-judul{
+  height: 40px;
+  overflow: hidden;
+}
+
+.halamanakun-grid-item-card-desc-cerita{
+  height: 120px;
+  overflow: hidden;
+}
+
+.halamanakun-grid-item-card-desc-info{
+  display: flex;
+}
+
+.halamanakun-grid-item-card-desc-info div{
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: center;
+  margin-right: 1rem;
+  height: 80px;
+}
+
+.halamanakun-grid-item-card-desc-info div .bx{
+  font-size: 1.5rem;
+}
+
+
+/* HalamanAkunLain */
+.halamanakunlain-container{
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+}
+
+.halamanakunlain-userinfo{
+  display: flex;
+  min-width: 440px;
+  justify-content: space-between;
+  align-items: center;
+  margin: 0px auto;
+}
+
+.halamanakunlain-userinfo-name{
+  display: flex;
+  flex-direction: column;
+}
+
+.halamanakunlain-userinfo-name p{
+  margin: 0px auto;
+}
+
+.halamanakunlain-userinfo-popularity p{
+  margin: auto 0px;
+  margin-left: 1rem;
+}
+
+.halamanakunlain-userinfo-popularity{
+  display: flex;
+  flex-direction: row;
+  width: 300px;
+  justify-content: space-between;
+  text-align: center;
+}
+
+.halamanakunlain-userinfo-popularity div{
+  border-left: 1px solid black;
+}
+
+.halamanakunlain-grid{
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 420px));
+  padding: 10px;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 1rem;
+}
+
+.halamanakunlain-grid-item{
+  height: 100%;
+}
+
+.halamanakunlain-grid-item-card{
+  background-color: white;
+  border: 1px solid gainsboro;
+  border-radius: 5px;
+  overflow: hidden;
+  width: 100%;
+}
+
+.halamanakunlain-grid-item-card img{
+  object-fit: cover;
+  width: 100%;
+  height: 200px;
+}
+
+.halamanakunlain-grid-item-card img:hover{
+  cursor: pointer;
+}
+
+.halamanakunlain-grid-item-card-desc{
+  padding: 0.8rem;
+}
+
+.halamanakunlain-grid-item-card-desc-judul{
+  height: 40px;
+  overflow: hidden;
+}
+
+.halamanakunlain-grid-item-card-desc-cerita{
+  height: 120px;
+  overflow: hidden;
+}
+
+.halamanakunlain-grid-item-card-desc-info{
+  display: flex;
+}
+
+.halamanakunlain-grid-item-card-desc-info div{
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: center;
+  margin-right: 1rem;
+  height: 80px;
+}
+
+.halamanakunlain-grid-item-card-desc-info div .bx{
+  font-size: 1.5rem;
 }
