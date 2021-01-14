@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { useHistory, useParams } from 'react-router-dom'
 import { Firebase } from '../../config';
+import { Button } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 const HalamanAkun = () => {
@@ -26,9 +27,14 @@ const HalamanAkun = () => {
             })
 
         // get posts data
+        // Firebase.database()
+        //     .ref(`users/${params.key}/posts/`)
+        //     .orderByChild("timeId")
+        //     .once("value", orderDataPost)
         Firebase.database()
-            .ref(`users/${params.key}/posts/`)
-            .orderByChild("timeId")
+            .ref(`posts/`)
+            .orderByChild("chef/uid")
+            .equalTo(params.key)
             .once("value", orderDataPost)
 
         // get following data
@@ -96,7 +102,11 @@ const HalamanAkun = () => {
         <div className="halamanakun-container">
             <div className="halamanakun-userinfo">
                 <div className="halamanakun-userinfo-name">
+                    <div className="halamanakun-userinfo-name-img">
+                        <i className='bx bxs-user'></i>
+                    </div>
                     <p>{userData.namaLengkap}</p>
+                    <Button variant="info" onClick={() => history.push(`/pengaturanakun/${userData.uid}`)}>Edit profile</Button>
                 </div>
                 <div className="halamanakun-userinfo-popularity">
                     <p>{posts.length} <br></br> posts</p>
@@ -119,13 +129,15 @@ const HalamanAkun = () => {
                             <p className="halamanakun-grid-item-card-desc-cerita">{recipe.data.cerita}</p>
                             <div className="halamanakun-grid-item-card-desc-info">
                                 <div>
-                                    <i class='bx bxs-time' ></i>
+                                    <i className='bx bxs-time' ></i>
                                     <p>{recipe.data.waktu}</p>
                                 </div>
+                                {recipe.data.biaya && (
                                 <div>
-                                    <i class='bx bx-repost'></i>
-                                    <p>recook 30x</p>
+                                    <i className='bx bxs-dollar-circle'></i>
+                                    <p>Rp. {recipe.data.biaya}K</p>
                                 </div>
+                                )}
                             </div>
                         </div>
                     </div>

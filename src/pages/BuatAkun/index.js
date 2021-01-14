@@ -95,7 +95,7 @@ const BuatAkun = () => {
             <div className="buatakun-cards">
                 <div className="buatakun-cards-left">
                     <h3>
-                        Makan dikosan tetep aseek bareng kossep!
+                        Makan dikosan tetep assek bareng kossep!
                     </h3>
                     <div style={{ width: "100%" }}>
                         <div className="buatakun-cards-left-form">

@@ -6,6 +6,8 @@ import LihatResep from './LihatResep';
 import HalamanAkun from './HalamanAkun';
 import HalamanAkunLain from './HalamanAkunLain';
 import HalamanEksplor from './HalamanEksplor';
+import PengaturanAkun from './PengaturanAkun';
+import Recook from './Recook';
 
 export {
     BuatAkun,
@@ -16,4 +18,6 @@ export {
     HalamanAkun,
     HalamanAkunLain,
     HalamanEksplor,
+    PengaturanAkun,
+    Recook,
 }

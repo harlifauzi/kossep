@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import "./App.css";
-import { BuatAkun, Masuk, HalamanUtama, BuatResep, LihatResep, HalamanAkun, HalamanAkunLain, HalamanEksplor } from "./pages";
+import { BuatAkun, Masuk, HalamanUtama, BuatResep, LihatResep, HalamanAkun, HalamanAkunLain, HalamanEksplor, PengaturanAkun, Recook } from "./pages";
 import { Route, Switch, useHistory } from "react-router-dom";
 import { Firebase } from "./config";
 import { Nav, Navbar, Dropdown, DropdownButton } from "react-bootstrap";
@@ -106,6 +106,8 @@ const App = () => {
             <Route path="/halamanakun/:key" component={HalamanAkun} />
             <Route path="/halamanakunlain/:key" component={HalamanAkunLain} />
             <Route path="/halamaneksplor/:key" component={HalamanEksplor} />
+            <Route path="/pengaturanakun/:key" component={PengaturanAkun} />
+            <Route path="/recook/:key" component={Recook} />
           </Switch>
         </>
       )}

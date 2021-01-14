@@ -4,14 +4,30 @@ import { v4 as uuidv4 } from "uuid";
 import { Firebase } from "../../config";
 import { Form, Button, InputGroup, FormControl } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
+import Backdrop from '@material-ui/core/Backdrop';
+import CircularProgress from '@material-ui/core/CircularProgress';
+import { makeStyles } from '@material-ui/core/styles';
+
+// style backdrop
+const useStyles = makeStyles((theme) => ({
+  backdrop: {
+    zIndex: theme.zIndex.drawer + 1,
+    color: '#fff',
+  },
+}));
+// /style backdrop
 
 const BuatResep = () => {
+  const classes = useStyles();
+  const [open, setOpen] = useState(false);
+
   const history = useHistory();
   const [judul, setJudul] = useState("");
   const [cerita, setCerita] = useState("");
   const [waktu, setWaktu] = useState("");
   const [bahanResep, setBahanResep] = useState([{ namaBahan: "" }]);
   const [langkahResep, setLangkahResep] = useState([{ namaLangkah: "" }]);
+  const [biaya, setBiaya] = useState("");
   const [urlPhoto, setUrlPhoto] = useState("");
   const [photo, setPhoto] = useState("");
   const dataPost = {
@@ -21,11 +37,11 @@ const BuatResep = () => {
     waktu,
     bahanResep,
     langkahResep,
+    biaya,
     urlPhoto,
     chef: JSON.parse(localStorage.getItem("user")),
     waktuPost: "",
     timeId: "",
-    likes: []
   };
 
   // function form bahan
@@ -60,6 +76,7 @@ const BuatResep = () => {
 
   // upload to cloudinary
   const postImage = async () => {
+    setOpen(true);
     const data = new FormData();
     data.append("file", photo);
     data.append("upload_preset", "kossep");
@@ -72,19 +89,18 @@ const BuatResep = () => {
       .then((data) => {
         console.log({ successUpload: data });
         setUrlPhoto(data.url);
+        setOpen(false)
       })
-      .catch((err) => console.log(err));
+      .catch((err) => {
+        console.log(err)
+        setOpen(false)
+      });
   };
 
   // buat resep
   const onBuatResep = () => {
     const today = new Date();
-    const date =
-      today.getDate() +
-      "-" +
-      (today.getMonth() + 1) +
-      "-" +
-      today.getFullYear();
+    const date = today.getDate() + "-" + (today.getMonth() + 1) + "-" + today.getFullYear();
     dataPost.postId = uuidv4();
     dataPost.waktuPost = date;
     dataPost.timeId = today.getTime();
@@ -92,10 +108,10 @@ const BuatResep = () => {
     Firebase.database()
       .ref(`posts/${dataPost.postId}/`)
       .set(dataPost);
-    Firebase.database()
-      .ref(`users/${dataPost.chef.uid}/posts/${dataPost.postId}/`)
-      .set(dataPost);
-    history.push("/");
+    // Firebase.database()
+    //   .ref(`users/${dataPost.chef.uid}/posts/${dataPost.postId}/`)
+    //   .set(dataPost);
+    history.push(`/halamanutama/${dataPost.chef.uid}`);
   };
 
   useEffect(() => {
@@ -110,6 +126,7 @@ const BuatResep = () => {
         <Form.Group>
           <Form.Label>Judul</Form.Label>
           <Form.Control
+            className="buatresep-form-judul"
             type="text"
             placeholder="judul"
             value={judul}
@@ -159,7 +176,7 @@ const BuatResep = () => {
               </InputGroup.Append>
             </InputGroup>
           ))}
-          <Button variant="primary" onClick={handleBahanAddInput}>
+          <Button variant="warning" onClick={handleBahanAddInput}>
             tambah
           </Button>
         </Form.Group>
@@ -186,9 +203,26 @@ const BuatResep = () => {
               </InputGroup.Append>
             </InputGroup>
           ))}
-          <Button variant="primary" onClick={handleLangkahAddInput}>
+          <Button variant="warning" onClick={handleLangkahAddInput}>
             tambah
           </Button>
+        </Form.Group>
+
+        <Form.Group>
+          <Form.Label>Biaya</Form.Label>
+          <InputGroup className="mb-3">
+            <InputGroup.Prepend>
+              <InputGroup.Text>Rp.</InputGroup.Text>
+            </InputGroup.Prepend>
+            <FormControl 
+              aria-label="Amount (to the nearest dollar)"
+              value={biaya}
+              onChange={(e) => setBiaya(e.target.value)} 
+            />
+            <InputGroup.Append>
+              <InputGroup.Text>K</InputGroup.Text>
+            </InputGroup.Append>
+          </InputGroup>
         </Form.Group>
 
         <InputGroup className="mb-3">
@@ -200,13 +234,20 @@ const BuatResep = () => {
         </InputGroup>
 
         <Button
-          variant="primary"
+          variant="warning"
           className="ml-auto mr-auto"
           onClick={onBuatResep}
         >
           Buat resep
         </Button>
       </Form>
+
+      {/* backdrop */}
+      <Backdrop className={classes.backdrop} open={open}>
+        <CircularProgress color="inherit" />
+      </Backdrop>
+      {/* /backdrop */}
+
     </div>
   );
 };

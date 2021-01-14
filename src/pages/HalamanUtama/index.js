@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useHistory, useParams } from "react-router-dom";
 import { Firebase } from "../../config";
-import { Button } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { ILBanner } from "../../assets/illustrations";
 
@@ -9,33 +8,51 @@ const HalamanUtama = () => {
     const history = useHistory();
     const params = useParams();
     const [recipes, setRecipes] = useState([]);
+    const [uidFollowers, setUidFollowers] = useState();
+    const [siap, setSiap] = useState(false)
 
     useEffect(() => {
-
-        // get my following data for order recipes
-        Firebase.database()
-        .ref(`users/${params.key}/following/`)
-        .once("value", orderDataFollowingRecipes);
-
+        getFollowersUid();
     }, []);
 
-    const orderDataFollowingRecipes = (items) => {
-        if (items.val()) {
-        const following = items.val();
-        const data = [];
-        Object.keys(following).map((user) => {
-            const recipes = following[user].posts;
-            Object.keys(recipes).map((recipe) => {
-            const dataRecipe = {
-                id: recipe,
-                data: recipes[recipe],
-            };
-            data.unshift(dataRecipe);
-            });
-        });
-        setRecipes(data);
+    useEffect(() => {
+        if (uidFollowers){
+            uidFollowers.map(item => {
+                Firebase.database()
+                    .ref("posts/")
+                    .orderByChild("chef/uid")
+                    .equalTo(item)
+                    .once("value")
+                    .then(res => {
+                        if(res.val()){
+                            const oldData = res.val();
+                            const newData = [];
+                            Object.keys(oldData).map(item => {
+                                newData.push(oldData[item])
+                            })
+                            setRecipes(newData);
+                            setSiap(true)
+                        }
+                    })
+            })
         }
-    };
+    }, [uidFollowers])
+
+    const getFollowersUid = () => {
+        Firebase.database()
+            .ref(`users/${params.key}/following/`)
+            .once("value")
+            .then(res => {
+                if (res.val()){
+                    const oldDataFollowers = res.val();
+                    const currentDataFollowers = [];
+                    Object.keys(oldDataFollowers).map(item => {
+                        currentDataFollowers.push(item)
+                    })
+                    setUidFollowers(currentDataFollowers);
+                }
+            })
+    }
 
     const lihatResep = (key) => {
         history.push(`/lihatresep/${key}`);
@@ -60,38 +77,40 @@ const HalamanUtama = () => {
             
             <div className="halamanutama-button">
                 <div className='halamanutama-button-explore' onClick={() => history.push(`/halamaneksplor/${params.key}`)}>
-                    <i class='bx bx-outline'></i>
+                    <i className='bx bx-outline'></i><p>Explore</p>
                 </div>
 
                 <div className='halamanutama-button-plus' onClick={() => history.push("/buatresep")}>
-                    <i class='bx bx-plus'></i>
+                    <i className='bx bx-plus'></i><p>Buat resep</p>
                 </div>
             </div>
 
-            {recipes && (
+            {siap && (
             <div className="halamanutama-grid">
 
                 {recipes.map(recipe => (
-                <div className="halamanutama-grid-item" key={recipe.id}>
+                <div className="halamanutama-grid-item" key={recipe.postId}>
                     <div className="halamanutama-grid-item-card">
-                        <img onClick={() => lihatResep(recipe.id)} src={recipe.data.urlPhoto} />
+                        <img onClick={() => lihatResep(recipe.postId)} src={recipe.urlPhoto} />
                         <div className="halamanutama-grid-item-card-desc">
-                            <h2 className="halamanutama-grid-item-card-desc-judul">{recipe.data.judul}</h2>
-                            <p className="halamanutama-grid-item-card-desc-cerita">{recipe.data.cerita}</p>
+                            <h2 className="halamanutama-grid-item-card-desc-judul">{recipe.judul}</h2>
+                            <p className="halamanutama-grid-item-card-desc-cerita">{recipe.cerita}</p>
                             <div className="halamanutama-grid-item-card-desc-info">
                                 <div>
-                                    <i class='bx bxs-time' ></i>
-                                    <p>{recipe.data.waktu}</p>
+                                    <i className='bx bxs-time' ></i>
+                                    <p>{recipe.waktu}</p>
                                 </div>
+                                {recipe.biaya && (
                                 <div>
-                                    <i class='bx bx-repost'></i>
-                                    <p>recook 30x</p>
+                                    <i className='bx bxs-dollar-circle'></i>
+                                    <p>Rp. {recipe.biaya}K</p>
                                 </div>
+                                )}
                                 <div 
                                     className="halamanutama-grid-item-card-desc-info-chef" 
-                                    onClick={() => lihatAkun(recipe.data.chef.uid)}>
+                                    onClick={() => lihatAkun(recipe.chef.uid)}>
                                         <i className='bx bxs-user' ></i>
-                                        <p>{recipe.data.chef.namaLengkap}</p>
+                                        <p>{recipe.chef.namaLengkap}</p>
                                 </div>
                             </div>
                         </div>

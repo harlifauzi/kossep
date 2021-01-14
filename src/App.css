@@ -1,4 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;500;600;700;800;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Nunito&display=swap');
 
 *{
   margin: 0;
@@ -376,17 +378,24 @@ h1,h2,h3,h4,h5,h6,p{
 }
 
 .halamanutama-button-plus, .halamanutama-button-explore{
-  display: flex;
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
   background-color: white;
+  display: flex;
+  padding: 10px 20px;
+  /* width: 100px;
+  height: 40px;
+  */
+  border-radius: 10px;
   margin-left: 0.5rem;
 }
 
 .halamanutama-button-plus i, .halamanutama-button-explore i{
   margin: auto;
   font-size: 1.7rem;
+}
+
+.halamanutama-button-plus p, .halamanutama-button-explore p{
+  margin: auto;
+  font-size: 1rem;
 }
 
 .halamanutama-button-plus, .halamanutama-button-explore:hover{
@@ -480,27 +489,6 @@ h1,h2,h3,h4,h5,h6,p{
   background-image: linear-gradient(to top right, #fcb629, #FDC75B);
 }
 
-.halamaneksplor-banner{
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 300px;
-}
-
-.halamaneksplor-banner img{
-  height: 100%;
-}
-
-.halamaneksplor-button{
-  display: flex;
-  margin-top: 1rem;
-}
-
-.halamaneksplor-button-buatresep{
-  margin-right: 0px;
-  margin-left: auto;
-}
-
 .halamaneksplor-grid{
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(300px, 420px));
@@ -589,6 +577,11 @@ h1,h2,h3,h4,h5,h6,p{
   flex-direction: column;
   max-width: 600px;
   margin: 0px auto;
+  overflow: hidden;
+}
+
+.buatresep-form-judul{
+  text-transform: capitalize;
 }
 
 .buatresep-form-bahan-itemlist-item, .buatresep-form-langkah-itemlist-item{
@@ -602,11 +595,132 @@ h1,h2,h3,h4,h5,h6,p{
   padding: 20px;
 }
 
+.lihatresep-formContainer{
+  padding-bottom: 10px;
+  border-bottom: 3px solid gainsboro;
+}
+
 .lihatresep-form{
   display: flex;
   flex-direction: column;
   max-width: 600px;
   margin: 0px auto;
+}
+
+.lihatresep-recookBy{
+  margin: auto 0px;
+  margin-left: 1rem;
+}
+
+.lihatresep-recook-buttonInfo{
+  margin-bottom: 1rem;
+}
+
+.lihatresep-form-title{
+  text-align: center;
+  font-family: 'Nunito', sans-serif;
+  font-weight: bold;
+  margin-bottom: 15px;
+}
+
+.lihatresep-chef{
+  font-weight: 700;
+  color: #f3a303;
+  transition: 0.3s;
+}
+
+.lihatresep-chef:hover{
+  color: black;
+  cursor: pointer;
+}
+
+.lihatresep-recookBy{
+  text-align: right;
+  color: black;
+  opacity: 0.5;
+}
+
+.lihatresep-recookBy .recookText{
+  font-style: italic;
+}
+
+.lihatresep-recookBy .recookOrang{
+  font-weight: 700;
+}
+
+.subtitle{
+  font-weight: bold;
+}
+
+.subtitle-underline{
+  border-bottom-width: 2px;
+  border-bottom-color: #888888;
+  border-bottom-style: dotted;
+  margin-left: 1rem;
+  display: flex;
+}
+
+.subtitle-underline p{
+  margin-top: auto;
+  margin-bottom: 0px;
+}
+
+.subtitle-borderRadius{
+  border-radius: 10px;
+  border-bottom-left-radius: 10px;
+}
+
+.lihatresep-tanggalDibuat{
+  text-align: right;
+}
+
+.lihatresep-recook-group{
+  display: flex;
+  margin-top: 0.6rem;
+  margin-bottom: 1rem;
+}
+
+.lihatresep-buttonRecook {
+  width: max-content;
+}
+
+.lihatresep-commentContainer{
+  padding-top: 21px;
+  padding-left: 1rem;
+}
+
+.lihatresep-comment{
+  display: flex;
+  flex-direction: column;
+  max-width: 600px;
+  margin: 0px auto;
+}
+
+.lihatresep-comment .judul{
+  margin-left: -1rem;
+}
+
+.lihatresep-comment-item {
+  border-bottom: 1px solid gainsboro;
+  padding: 10px 0px;
+}
+
+.lihatresep-comment-item p{
+  margin: 0px;
+}
+
+.lihatresep-comment-inputGroup{
+  margin-top: 1rem;
+}
+
+.lihatresep-modal{
+  display: flex;
+  height: 100vh;
+  width: 100%;
+  position: fixed;
+  z-index: 99;
+  top: 0;
+  left: 0;
 }
 
 
@@ -627,6 +741,27 @@ h1,h2,h3,h4,h5,h6,p{
 
 .halamanakun-userinfo p{
   margin: auto 0px;
+}
+
+.halamanakun-userinfo-name {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.halamanakun-userinfo-name-img {
+  display: flex;
+  height: 80px;
+  width: 80px;
+  border-radius: 50%;
+  background-color: #f7f7f7;
+}
+
+.halamanakun-userinfo-name-img i{
+  margin: auto;
+  font-size: 3.5rem;
+  color: gainsboro;
 }
 
 .halamanakun-userinfo-popularity{
@@ -805,4 +940,129 @@ h1,h2,h3,h4,h5,h6,p{
 
 .halamanakunlain-grid-item-card-desc-info div .bx{
   font-size: 1.5rem;
+}
+
+
+/* PengaturanAkun */
+.pengaturanakun-container {
+  display: flex;
+  flex-direction: column;
+  min-height: calc(100vh - 55px);
+  max-width: 600px;
+  margin: 0px auto;
+  padding: 20px;
+}
+
+.pengaturanakun-img-container {
+  display: flex;
+  border-bottom: 1px solid gainsboro;
+  padding-bottom: 20px;
+}
+
+.pengaturanakun-img-container p {
+  margin: auto 0px;
+}
+
+.pengaturanakun-img {
+  display: flex;
+  height: 160px;
+  width: 160px;
+  border-radius: 50%;
+  margin: 0px auto;
+  background-color: #f7f7f7;
+}
+
+.pengaturanakun-img i {
+  font-size: 7rem;
+  margin: auto;
+  color: gainsboro;
+}
+
+.pengaturanakun-bio-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 20px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid gainsboro;
+}
+
+.pengaturanakun-bio-container p{
+  margin: auto 0px;
+}
+
+.pengaturanakun-nama-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 20px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid gainsboro;
+}
+
+.pengaturanakun-nama-container p{
+  margin: auto 0px;
+}
+
+.pengaturanakun-email-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 20px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid gainsboro;
+}
+
+.pengaturanakun-email-container p{
+  margin: auto 0px;
+}
+
+.pengaturanakun-katasandi-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 20px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid gainsboro;
+}
+
+.pengaturanakun-katasandi-container p{
+  margin: auto 0px;
+}
+
+.pengaturanakun-button {
+  margin-top: auto;
+  margin-bottom: 0px;
+  width: max-content;
+}
+
+.pengaturanakun-link {
+  cursor: pointer;
+}
+
+
+/* Recook */
+.recook-container{
+  padding: 20px;
+}
+
+.recook-buttonInfo{
+  margin-bottom: 1rem;
+}
+
+.recook-form{
+  display: flex;
+  flex-direction: column;
+  max-width: 600px;
+  margin: 0px auto;
+  overflow: hidden;
+}
+
+.recook-form-judul{
+  text-transform: capitalize;
+}
+
+.recook-form-bahan-itemlist-item, .recook-form-langkah-itemlist-item{
+  display: flex;
+  flex-direction: row !important;
 }

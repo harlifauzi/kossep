@@ -131,16 +131,27 @@ const HalamanAkunLain = () => {
             setFollowStatus(!followStatus);
 
         } else {
+            const myImportantData = {
+                namaLengkap: myData.namaLengkap,
+                email: myData.alamatEmail,
+                uid: myData.uid
+            }
+
+            const userImportantData = {
+                namaLengkap: userData.namaLengkap,
+                email: userData.alamatEmail,
+                uid: userData.uid
+            }
 
             // add my uid to other user followers document
             Firebase.database()
             .ref(`users/${userData.uid}/followers/${myData.uid}/`)
-            .set(myData)
+            .set(myImportantData)
 
             // add other user uid to my following document
             Firebase.database()
             .ref(`users/${myData.uid}/following/${userData.uid}`)
-            .set(userData);
+            .set(userImportantData);
 
             // add my uid to followers state
             followers.push(myData.uid)
@@ -158,7 +169,7 @@ const HalamanAkunLain = () => {
                     <p>{userData.namaLengkap}</p>
 					<Button 
 						className="ml-auto mr-auto" 
-						variant={followStatus?"primary":"light"}
+						variant={followStatus?"light":"light"}
 						onClick={() => onFollow(userData.uid)}
 					>{followStatus?"Berhenti mengikuti":"Ikuti"}</Button>
                 </div>
@@ -183,13 +194,15 @@ const HalamanAkunLain = () => {
                             <p className="halamanakunlain-grid-item-card-desc-cerita">{recipe.data.cerita}</p>
                             <div className="halamanakunlain-grid-item-card-desc-info">
                                 <div>
-                                    <i class='bx bxs-time' ></i>
+                                    <i className='bx bxs-time' ></i>
                                     <p>{recipe.data.waktu}</p>
                                 </div>
+                                {recipe.data.biaya && (
                                 <div>
-                                    <i class='bx bx-repost'></i>
-                                    <p>recook 30x</p>
+                                    <i className='bx bxs-dollar-circle'></i>
+                                    <p>Rp. {recipe.data.biaya}K</p>
                                 </div>
+                                )}
                             </div>
                         </div>
                     </div>
