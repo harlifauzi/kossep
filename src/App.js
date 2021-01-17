@@ -17,7 +17,7 @@ import { Route, Switch, useHistory } from "react-router-dom";
 import { Firebase } from "./config";
 import { Nav, Navbar, Dropdown, DropdownButton } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
-import { ILLogo } from "./assets/illustrations";
+import { ILLogo, ILNull } from "./assets/illustrations";
 
 const App = () => {
     const history = useHistory();
@@ -77,7 +77,7 @@ const App = () => {
                             className="ml-auto"
                             variant="light"
                             menuAlign="right"
-                            title={userLoginData.namaLengkap ? userLoginData.namaLengkap : "loading"}
+                            title={userLoginData.photo ? <img src={userLoginData.photo} alt="" />  : <img src={ILNull} alt="" />}
                             id="dropdown-menu-align-right"
                         >
                             <Dropdown.Item

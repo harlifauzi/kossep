@@ -2,14 +2,14 @@ import React, { useEffect, useState } from "react";
 import { useHistory, useParams } from "react-router-dom";
 import { Firebase } from "../../config";
 import "bootstrap/dist/css/bootstrap.min.css";
-import { ILBanner } from "../../assets/illustrations";
+import { ILBanner, ILNull } from "../../assets/illustrations";
 
 const HalamanUtama = () => {
     const history = useHistory();
     const params = useParams();
     const userLoginStatus = localStorage.getItem("userLoginStatus");
     const [recipes, setRecipes] = useState([]);
-    const [siap, setSiap] = useState(false)
+    const [siap, setSiap] = useState(false)                             // actually I dont know what this state, but if without this, error will come
 
 
     useEffect(() => {
@@ -23,28 +23,32 @@ const HalamanUtama = () => {
 
 
     // get following uid for get recipes
-    const getFollowingUid = (items) => {
-        console.log(items.val());
+    const getFollowingUid = (items) => {    
         items.forEach(item => {
-            console.log(item.val().uid)
             Firebase.database()
                 .ref("posts/")
                 .orderByChild("chef/uid")
                 .equalTo(item.val().uid)
-                .once("value", getRecipesData)
+                .once("value")
+                .then(res => {
+                    const items = res;
+                    
+                    items.forEach(item => {
+                        const recipe = item.val()
+                        Firebase.database()
+                            .ref(`users/${recipe.chef.uid}`)
+                            .once("value")
+                            .then(res => {
+                                setSiap(false)
+                                const chef = res.val();
+                                recipe.chef = chef;
+                                console.log(recipe)
+                                recipes.push(recipe)
+                                setSiap(true)
+                            })
+                    })
+                })
         })
-    }
-
-
-    // get recipes
-    const getRecipesData = (items) => {
-        setSiap(false)
-        items.forEach(item => {
-            console.log(item.val());
-            recipes.push(item.val());
-        })
-        console.log(recipes);
-        setSiap(true)
     }
 
 
@@ -115,7 +119,11 @@ const HalamanUtama = () => {
                                     className="halamanutama-grid-item-card-desc-info-chef" 
                                     onClick={() => lihatAkun(recipe.chef.uid)}
                                 >
-                                    <i className='bx bxs-user' ></i>
+                                    {recipe.chef.photo ? (
+                                        <img src={recipe.chef.photo} alt=""/>
+                                    ) : (
+                                        <img src={ILNull} alt=""/>
+                                    )}
                                     <p>{recipe.chef.namaLengkap}</p>
                                 </div>
                             </div>

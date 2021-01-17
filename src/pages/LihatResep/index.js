@@ -3,6 +3,7 @@ import { useHistory, useParams } from "react-router-dom";
 import { Firebase } from "../../config";
 import { v4 as uuidv4 } from "uuid";
 import { Form, InputGroup, FormControl, Button, Modal } from "react-bootstrap";
+import { ILNull } from "../../assets"
 import "bootstrap/dist/css/bootstrap.min.css";
 import Snackbar from "@material-ui/core/Snackbar";
 import MuiAlert from "@material-ui/lab/Alert";
@@ -23,6 +24,7 @@ const LihatResep = () => {
     const [resep, setResep] = useState();
     const [comment, setComment] = useState([]);
     const [newComment, setNewComment] = useState("");
+    const [commentReady, setCommentReady] = useState(false);
     const [recookFrom, setRecookFrom] = useState("");
     const [recookParam, setRecookParam] = useState("");
     const [recookBy, setRecookBy] = useState([]);
@@ -48,6 +50,7 @@ const LihatResep = () => {
     useEffect(() => {
         setResep("");
         setComment("");
+        setCommentReady(false)
         setNewComment("");
         setRecookFrom("");
         setRecookParam("");
@@ -101,17 +104,28 @@ const LihatResep = () => {
         .once("value")
         .then((res) => {
             if (res.val()) {
-            const data = [];
-            const oldData = res.val();
-            Object.keys(oldData).map((item) => {
-                const newData = {
-                id: item,
-                data: oldData[item],
-                };
-                data.push(newData);
-            });
-            console.log(data);
-            setComment(data);
+                const data = [];
+                const oldData = res.val();
+                Object.keys(oldData).map((item) => {
+
+                    Firebase.database()
+                        .ref(`users/${oldData[item].byUser.uid}/`)
+                        .once("value")
+                        .then(res => {
+                            const newData = {
+                                id: item,
+                                data: oldData[item],
+                                photo: res.val().photo
+                            }
+                            setCommentReady(false)
+
+                            data.unshift(newData)
+                            setComment(data)
+                            console.log(data)
+
+                            setCommentReady(true)
+                        })
+                });
             }
         });
     }, [recookParam]);
@@ -310,16 +324,23 @@ const LihatResep = () => {
 
             <div className="lihatresep-commentContainer">
                 <div className="lihatresep-comment">
-                    <p className="subtitle judul">Komentar</p>
+                    <div className="lihatresep-comment-judul">
+                        <i class='bx bx-comment-detail'></i>
+                        <p className="subtitle judul">Komentar</p>
+                    </div>
                     {/* when comments available */}
-                    {comment && (
+                    {commentReady && (
                         <div className="lihatresep-comment-list">
                         {comment.map((comment) => (
                             <div className="lihatresep-comment-item" key={comment.id}>
-                                <p 
-                                    className="subtitle"
-                                    onClick={() => onLihatProfile(comment.data.byUser.uid)}
-                                >{comment.data.byUser.namaLengkap}</p>
+                                <div>
+                                    {comment.photo && (<img src={comment.photo} alt="" />)}
+                                    {!comment.photo && (<img src={ILNull} alt="" />)}
+                                    <p 
+                                        className="subtitle"
+                                        onClick={() => onLihatProfile(comment.data.byUser.uid)}
+                                    >{comment.data.byUser.namaLengkap}</p>
+                                </div>
                                 <p>{comment.data.komen}</p>
                             </div>
                         ))}

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useHistory, useParams } from "react-router-dom";
 import { Firebase } from "../../config";
 import { Button, InputGroup, FormControl } from "react-bootstrap";
+import { ILNull } from "../../assets/illustrations";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 const HalamanEksplor = () => {
@@ -11,13 +12,15 @@ const HalamanEksplor = () => {
     const [recipes, setRecipes] = useState([]);
     const [search, setSearch] = useState("");
 
+    const [siap, setSiap] = useState(false)
+
 
     useEffect(() => {
         // get all posts data
         Firebase.database()
-        .ref("posts/")
-        .orderByChild("timeId")
-        .once("value", orderAllPostsData);
+            .ref("posts/")
+            .orderByChild("timeId")
+            .once("value", orderAllPostsData);
     }, []);
 
 
@@ -26,11 +29,18 @@ const HalamanEksplor = () => {
         const data = [];
         
         items.forEach((item) => {
-        const oldData = item.val();
-        data.unshift(oldData);
+            const oldData = item.val();Firebase.database()
+                .ref(`users/${oldData.chef.uid}`)
+                .once("value")
+                .then(res => {
+                    setSiap(false)
+                    const chef = res.val();
+                    oldData.chef = chef;
+                    data.unshift(oldData);
+                    setRecipes(data)
+                    setSiap(true)
+                })
         });
-        
-        setRecipes(data);
     };
 
 
@@ -52,7 +62,7 @@ const HalamanEksplor = () => {
                 history.push(`/halamanakunlain/${key}`);
             }
         } else {
-        history.push(`/halamanakunlain/${key}`);
+            history.push(`/halamanakunlain/${key}`);
         }
 
     }
@@ -116,17 +126,20 @@ const HalamanEksplor = () => {
                                     <i className='bx bxs-time' ></i>
                                     <p>{recipe.waktu}</p>
                                 </div>
-                                {recipe.biaya && (
                                 <div>
                                     <i className='bx bxs-dollar-circle'></i>
                                     <p>Rp. {recipe.biaya}K/porsi</p>
                                 </div>
-                                )}
                                 <div 
                                     className="halamaneksplor-grid-item-card-desc-info-chef" 
-                                    onClick={() => lihatAkun(recipe.chef.uid)}>
-                                        <i className='bx bxs-user' ></i>
-                                        <p>{recipe.chef.namaLengkap}</p>
+                                    onClick={() => lihatAkun(recipe.chef.uid)}
+                                >
+                                    {recipe.chef.photo ? (
+                                        <img src={recipe.chef.photo} alt=""/>
+                                    ) : (
+                                        <img src={ILNull} alt=""/>
+                                    )}
+                                    <p>{recipe.chef.namaLengkap}</p>
                                 </div>
                             </div>
                         </div>

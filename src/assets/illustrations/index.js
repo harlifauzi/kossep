@@ -8,6 +8,7 @@ import ILFarhan from './farhan.jpg';
 import ILHarley from './harley.jpg';
 import ILNadya from './nadya.jpg';
 import ILRahma from './rahma.jpg';
+import ILNull from './user.png';
 
 export {
     ILLogo,
@@ -20,4 +21,5 @@ export {
     ILHarley,
     ILNadya,
     ILRahma,
+    ILNull,
 }

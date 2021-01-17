@@ -45,11 +45,18 @@ h1,h2,h3,h4,h5,h6,p{
 
 .app-navbar img{
   margin: 0px;
-  height: 39px;
+  height: 45px;
 }
 
 .app-container {
   padding-top: 55px;
+}
+
+.ml-auto img{
+  height: 35px;
+  width: 35px;
+  border-radius: 50%;
+  object-fit: cover;
 }
 
 
@@ -499,6 +506,13 @@ h1,h2,h3,h4,h5,h6,p{
   overflow: hidden;
 }
 
+.halamanutama-grid-item-card-desc-info-chef img{
+  height: 30px;
+  width: 30px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
 .halamanutama-grid-item-card-desc-info-chef:hover{
   cursor: pointer;
 }
@@ -597,6 +611,13 @@ h1,h2,h3,h4,h5,h6,p{
   text-align: center;
   height: min-content;
   overflow: hidden;
+}
+
+.halamaneksplor-grid-item-card-desc-info-chef img{
+  height: 30px;
+  width: 30px;
+  border-radius: 50%;
+  object-fit: cover;
 }
 
 .halamaneksplor-grid-item-card-desc-info-chef:hover{
@@ -775,13 +796,42 @@ h1,h2,h3,h4,h5,h6,p{
   margin: 0px auto;
 }
 
-.lihatresep-comment .judul{
+.lihatresep-comment-judul{
+  display: flex;
   margin-left: -1rem;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.lihatresep-comment-judul i{
+  font-size: 1.8rem;
+}
+
+.lihatresep-comment .judul{
+  margin: 0px;
+  font-size: 1.3rem;
 }
 
 .lihatresep-comment-item {
   border-bottom: 1px solid gainsboro;
-  padding: 10px 0px;
+  padding-top: 15px;
+  padding-bottom: 10px;
+}
+
+.lihatresep-comment-item div{
+  display: flex;
+  align-items: center;
+}
+
+.lihatresep-comment-item div img{
+  height: 40px;
+  width: 40px;
+  border-radius: 50px;
+  object-fit: cover;
+}
+
+.lihatresep-comment-item .subtitle{
+  margin-left: 0.5rem;
 }
 
 .lihatresep-comment-item .subtitle:hover{
