@@ -10,6 +10,10 @@
   font-family: 'poppins', sans-serif;
 }
 
+a{
+  color: inherit !important;
+}
+
 h1,h2,h3,h4,h5,h6,p{
   margin: 0px;
 }
@@ -17,6 +21,14 @@ h1,h2,h3,h4,h5,h6,p{
 /* App */
 .app-navbar{
   background-image: linear-gradient(to bottom right, #fcb629, #FDC75B);
+}
+
+.app-navbar-wrapper{
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 99;
 }
 
 .app-navbar *:focus{
@@ -34,6 +46,10 @@ h1,h2,h3,h4,h5,h6,p{
 .app-navbar img{
   margin: 0px;
   height: 39px;
+}
+
+.app-container {
+  padding-top: 55px;
 }
 
 
@@ -442,6 +458,10 @@ h1,h2,h3,h4,h5,h6,p{
   overflow: hidden;
 }
 
+.halamanutama-grid-item-card-desc-judul:hover{
+  cursor: pointer;
+}
+
 .halamanutama-grid-item-card-desc-cerita{
   height: 120px;
   overflow: hidden;
@@ -451,13 +471,18 @@ h1,h2,h3,h4,h5,h6,p{
   display: flex;
 }
 
+.halamanutama-grid-item-card-desc-info p{
+  text-align: center;
+}
+
 .halamanutama-grid-item-card-desc-info div{
   display: flex;
   flex-direction: column;
-  justify-content: flex-end;
   align-items: center;
   margin-right: 1rem;
   height: 80px;
+  margin-bottom: auto;
+  margin-top: 0px;
 }
 
 .halamanutama-grid-item-card-desc-info div .bx{
@@ -467,6 +492,11 @@ h1,h2,h3,h4,h5,h6,p{
 .halamanutama-grid-item-card-desc-info-chef{
   margin-left: auto;
   margin-right: 0px !important;
+  cursor: pointer;
+  max-width: 100px;
+  text-align: center;
+  height: min-content;
+  overflow: hidden;
 }
 
 .halamanutama-grid-item-card-desc-info-chef:hover{
@@ -529,6 +559,10 @@ h1,h2,h3,h4,h5,h6,p{
   overflow: hidden;
 }
 
+.halamaneksplor-grid-item-card-desc-judul:hover{
+  cursor: pointer;
+}
+
 .halamaneksplor-grid-item-card-desc-cerita{
   height: 120px;
   overflow: hidden;
@@ -538,13 +572,18 @@ h1,h2,h3,h4,h5,h6,p{
   display: flex;
 }
 
+.halamaneksplor-grid-item-card-desc-info p{
+  text-align: center;
+}
+
 .halamaneksplor-grid-item-card-desc-info div{
   display: flex;
   flex-direction: column;
-  justify-content: flex-end;
   align-items: center;
   margin-right: 1rem;
   height: 80px;
+  margin-bottom: auto;
+  margin-top: 0px;
 }
 
 .halamaneksplor-grid-item-card-desc-info div .bx{
@@ -554,9 +593,13 @@ h1,h2,h3,h4,h5,h6,p{
 .halamaneksplor-grid-item-card-desc-info-chef{
   margin-left: auto;
   margin-right: 0px !important;
+  max-width: 100px;
+  text-align: center;
+  height: min-content;
+  overflow: hidden;
 }
 
-.halamaneksplor-grid-item-card-desc-info-chef{
+.halamaneksplor-grid-item-card-desc-info-chef:hover{
   cursor: pointer;
 }
 
@@ -589,6 +632,16 @@ h1,h2,h3,h4,h5,h6,p{
   flex-direction: row !important;
 }
 
+.buatresep-bahan-wrapper p, .buatresep-langkah-wrapper p{
+  top: 15%;
+  color: #f3a303;
+  font-weight: 600;
+  position: absolute;
+}
+
+.buatresep-bahan-formcontrol, .buatresep-langkah-formcontrol{
+  margin-left: 1.5rem;
+}
 
 /* LihatResep */
 .lihatresep-container{
@@ -621,6 +674,11 @@ h1,h2,h3,h4,h5,h6,p{
   font-family: 'Nunito', sans-serif;
   font-weight: bold;
   margin-bottom: 15px;
+}
+
+.mb-3 .card-img-top{
+  object-fit: cover;
+  height: 400px;
 }
 
 .lihatresep-chef{
@@ -660,9 +718,30 @@ h1,h2,h3,h4,h5,h6,p{
   display: flex;
 }
 
+.subtitle-underline input{
+  margin: auto 0px;
+  margin-right: 0px;
+  margin-left: auto;
+}
+
+.subtitle-underline-number{
+  position: absolute;
+  color: #f3a303
+}
+
+.subtitle-underline-value{
+  margin-left: 1.5rem;
+  margin-right: 1rem;
+}
+
 .subtitle-underline p{
   margin-top: auto;
   margin-bottom: 0px;
+}
+
+.subtitle-underline span{
+  position: absolute;
+  left: -10;
 }
 
 .subtitle-borderRadius{
@@ -705,6 +784,10 @@ h1,h2,h3,h4,h5,h6,p{
   padding: 10px 0px;
 }
 
+.lihatresep-comment-item .subtitle:hover{
+  cursor: pointer;
+}
+
 .lihatresep-comment-item p{
   margin: 0px;
 }
@@ -733,8 +816,8 @@ h1,h2,h3,h4,h5,h6,p{
 
 .halamanakun-userinfo{
   display: flex;
-  min-width: 440px;
-  justify-content: space-between;
+  width: 100%;
+  justify-content: center;
   align-items: center;
   margin: 0px auto;
 }
@@ -748,6 +831,7 @@ h1,h2,h3,h4,h5,h6,p{
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  margin-right: 1rem;
 }
 
 .halamanakun-userinfo-name-img {
@@ -756,6 +840,13 @@ h1,h2,h3,h4,h5,h6,p{
   width: 80px;
   border-radius: 50%;
   background-color: #f7f7f7;
+}
+
+.halamanakun-userinfo-name-img img{
+  height: 80px;
+  width: 80px;
+  border-radius: 50%;
+  object-fit: cover;
 }
 
 .halamanakun-userinfo-name-img i{
@@ -838,18 +929,36 @@ h1,h2,h3,h4,h5,h6,p{
   font-size: 1.5rem;
 }
 
+@media (max-width: 490px){
+  .halamanakun-userinfo-popularity{
+    flex-direction: column;
+    height: 150px;
+    width: max-content;
+    margin-left: auto;
+    margin-right: 0px;
+    text-align: left;
+  }
+  .halamanakun-userinfo-popularity br{
+    display: none;
+  }
+  .halamanakun-userinfo-popularity div{
+    border-bottom: 1px solid black;
+  }
+}
+
 
 /* HalamanAkunLain */
 .halamanakunlain-container{
   display: flex;
   flex-direction: column;
   padding: 20px;
+  min-height: calc(100vh - 55px);
 }
 
 .halamanakunlain-userinfo{
   display: flex;
-  min-width: 440px;
-  justify-content: space-between;
+  width: 100%;
+  justify-content: center;
   align-items: center;
   margin: 0px auto;
 }
@@ -857,6 +966,29 @@ h1,h2,h3,h4,h5,h6,p{
 .halamanakunlain-userinfo-name{
   display: flex;
   flex-direction: column;
+  margin-right: 1rem;
+}
+
+.halamanakunlain-userinfo-name-img {
+  display: flex;
+  height: 80px;
+  width: 80px;
+  border-radius: 50%;
+  background-color: #f7f7f7;
+  margin: 0px auto;
+}
+
+.halamanakunlain-userinfo-name-img img{
+  height: 80px;
+  width: 80px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.halamanakunlain-userinfo-name-img i{
+  margin: auto;
+  font-size: 3.5rem;
+  color: gainsboro;
 }
 
 .halamanakunlain-userinfo-name p{
@@ -865,7 +997,6 @@ h1,h2,h3,h4,h5,h6,p{
 
 .halamanakunlain-userinfo-popularity p{
   margin: auto 0px;
-  margin-left: 1rem;
 }
 
 .halamanakunlain-userinfo-popularity{
@@ -932,14 +1063,48 @@ h1,h2,h3,h4,h5,h6,p{
 .halamanakunlain-grid-item-card-desc-info div{
   display: flex;
   flex-direction: column;
-  justify-content: flex-end;
   align-items: center;
   margin-right: 1rem;
-  height: 80px;
+  max-height: 80px;
+  margin-bottom: auto;
+  margin-top: 0px;
 }
 
 .halamanakunlain-grid-item-card-desc-info div .bx{
   font-size: 1.5rem;
+}
+
+.zero-posts{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin: auto;
+}
+
+.zero-posts p{
+  font-size: 1.5rem;
+}
+
+.zero-posts i{
+  font-size: 4rem;
+}
+
+@media (max-width: 490px){
+  .halamanakunlain-userinfo-popularity{
+    flex-direction: column;
+    height: 150px;
+    width: max-content;
+    margin-left: auto;
+    margin-right: 0px;
+    text-align: left;
+  }
+  .halamanakunlain-userinfo-popularity br{
+    display: none;
+  }
+  .halamanakunlain-userinfo-popularity div{
+    border-bottom: 1px solid black;
+  }
 }
 
 
@@ -955,6 +1120,7 @@ h1,h2,h3,h4,h5,h6,p{
 
 .pengaturanakun-img-container {
   display: flex;
+  flex-direction: column;
   border-bottom: 1px solid gainsboro;
   padding-bottom: 20px;
 }
@@ -970,6 +1136,22 @@ h1,h2,h3,h4,h5,h6,p{
   border-radius: 50%;
   margin: 0px auto;
   background-color: #f7f7f7;
+}
+
+.pengaturanakun-img img{
+  height: 160px;
+  width: 160px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.pengaturanakun-img-container p {
+  text-align: center;
+  margin-top: 0.3rem;
+}
+
+.pengaturanakun-img-container p:hover {
+  cursor: pointer;
 }
 
 .pengaturanakun-img i {
@@ -1065,4 +1247,98 @@ h1,h2,h3,h4,h5,h6,p{
 .recook-form-bahan-itemlist-item, .recook-form-langkah-itemlist-item{
   display: flex;
   flex-direction: row !important;
+}
+
+.recook-bahan-wrapper p, .recook-langkah-wrapper p{
+  top: 15%;
+  color: #f3a303;
+  font-weight: 600;
+  position: absolute;
+}
+
+.recook-bahan-formcontrol, .recook-langkah-formcontrol{
+  margin-left: 1.5rem;
+}
+
+
+/* AboutUs */
+.aboutus-container{
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+  min-height: calc(100vh - 56px);
+  background-image: linear-gradient(to top right, #fcb629, #FDC75B);
+}
+
+.aboutus-container h1{
+  text-align: center;
+  letter-spacing: 0.5rem;
+  text-decoration: underline;
+  margin-bottom: 1.5rem;
+}
+
+.aboutus-card-grid{
+  display: grid;
+  grid-template-columns: repeat(auto-fill, 300px);
+  justify-content: center;
+  gap: 20px;
+  margin-top: 1rem;
+}
+
+.aboutus-card{
+  display: flex;
+  flex-direction: column;
+  height: 400px;
+  width: 300px;
+  background-image: linear-gradient(to top right, gainsboro, ghostwhite);
+  box-shadow: 5px 5px 20px 0px rgba(0, 0, 0, 0.5);
+  border-radius: 10px;
+  padding: 20px;
+}
+
+.aboutus-img-wrapper{
+  height: 100px;
+  width: 100px;
+  border-radius: 50%;
+  background-color: ghostwhite;
+  margin: 0px auto;
+  border: 3px solid #FDC75B;
+  overflow: hidden;
+}
+
+.aboutus-img-wrapper img{
+  height: 100px;
+  width: 100px;
+  object-fit: cover;
+}
+
+.aboutus-nama{
+  margin: 0px;
+  margin-top: 2rem;
+  text-align: center;
+  font-weight: 600;
+  text-transform: capitalize;
+}
+
+.aboutus-job{
+  text-align: center;
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: #FDC75B;
+}
+
+.aboutus-social{
+  margin-top: auto;
+  margin-bottom: 0px;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.aboutus-social i{
+  font-size: 2rem;
+}
+
+.aboutus-social i{
+  cursor: pointer;
 }

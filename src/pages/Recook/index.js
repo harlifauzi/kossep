@@ -8,6 +8,7 @@ import Backdrop from '@material-ui/core/Backdrop';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import { makeStyles } from '@material-ui/core/styles';
 
+
 // style backdrop
 const useStyles = makeStyles((theme) => ({
     backdrop: {
@@ -16,6 +17,7 @@ const useStyles = makeStyles((theme) => ({
     },
   }));
 // /style backdrop
+
 
 const Recook = () => {
     const classes = useStyles();
@@ -48,6 +50,7 @@ const Recook = () => {
         recookFrom,
     };
 
+
     // function form bahan
     const handleBahanChangeInput = (index, event) => {
         const values = [...bahanResep];
@@ -63,6 +66,7 @@ const Recook = () => {
         setBahanResep(values);
     };
 
+
     // function form langkah
     const handleLangkahChangeInput = (index, event) => {
         const values = [...langkahResep];
@@ -77,6 +81,7 @@ const Recook = () => {
         values.splice(index, 1);
         setLangkahResep(values);
     };
+
 
     // upload to cloudinary
     const postImage = async () => {
@@ -114,22 +119,16 @@ const Recook = () => {
         .ref(`posts/${dataPost.postId}/`)
         .set(dataPost);
 
-        // Firebase.database()
-        // .ref(`users/${dataPost.chef.uid}/posts/${dataPost.postId}/`)
-        // .set(dataPost);
-
         Firebase.database()
         .ref(`posts/${currentRecipe.postId}/recookBy/${dataPost.postId}/`)
         .set(dataPost);
 
-        // Firebase.database()
-        // .ref(`users/${currentRecipe.chef.uid}/posts/${currentRecipe.postId}/recookBy/${dataPost.postId}/`)
-        // .set(dataPost);
-
         history.push(`/halamanutama/${dataPost.chef.uid}`);
     };
 
+
     useEffect(() => {
+        // get recipe data for recok
         Firebase.database()
             .ref(`posts/${params.key}/`)
             .once("value")
@@ -162,6 +161,8 @@ const Recook = () => {
             })
     }, []);
 
+
+    // execute when photo state change
     useEffect(() => {
         if(photo){
             postImage();
@@ -172,6 +173,7 @@ const Recook = () => {
     return (
         <div className="recook-container">
             <Form className="recook-form">
+                {/* when recipe available */}
                 {currentRecipe&&(
                     <Button 
                         className="recook-buttonInfo" 
@@ -212,17 +214,19 @@ const Recook = () => {
                     />
                 </Form.Group>
         
-                <Form.Group>
+                <Form.Group className="recook-bahan-wrapper">
                     <Form.Label>Bahan-bahan</Form.Label>
                     {bahanResep.map((bahan, index) => (
                     <InputGroup className="mb-3" key={index}>
+                        <p>{index+1}.</p>
                         <FormControl
-                        placeholder="nama bahan"
-                        aria-describedby="basic-addon2"
-                        name="namaBahan"
-                        type="text"
-                        value={bahan.namaBahan}
-                        onChange={(event) => handleBahanChangeInput(index, event)}
+                            className="recook-bahan-formcontrol"
+                            placeholder="nama bahan"
+                            aria-describedby="basic-addon2"
+                            name="namaBahan"
+                            type="text"
+                            value={bahan.namaBahan}
+                            onChange={(event) => handleBahanChangeInput(index, event)}
                         />
                         <InputGroup.Append>
                         <Button
@@ -239,17 +243,19 @@ const Recook = () => {
                     </Button>
                 </Form.Group>
         
-                <Form.Group>
+                <Form.Group className="recook-langkah-wrapper">
                     <Form.Label>Langkah-langkah</Form.Label>
                     {langkahResep.map((langkah, index) => (
                     <InputGroup className="mb-3" key={index}>
+                        <p>{index+1}.</p>
                         <FormControl
-                        placeholder="nama langkah"
-                        aria-describedby="basic-addon2"
-                        name="namaLangkah"
-                        type="text"
-                        value={langkah.namaLangkah}
-                        onChange={(event) => handleLangkahChangeInput(index, event)}
+                            className="recook-langkah-formcontrol"
+                            placeholder="nama langkah"
+                            aria-describedby="basic-addon2"
+                            name="namaLangkah"
+                            type="text"
+                            value={langkah.namaLangkah}
+                            onChange={(event) => handleLangkahChangeInput(index, event)}
                         />
                         <InputGroup.Append>
                         <Button
@@ -273,12 +279,13 @@ const Recook = () => {
                         <InputGroup.Text>Rp.</InputGroup.Text>
                         </InputGroup.Prepend>
                         <FormControl 
-                        aria-label="Amount (to the nearest dollar)"
-                        value={biaya}
-                        onChange={(e) => setBiaya(e.target.value)} 
+                            aria-label="Amount (to the nearest dollar)"
+                            value={biaya}
+                            onChange={(e) => setBiaya(e.target.value)}
+                            maxLength={2} 
                         />
                         <InputGroup.Append>
-                        <InputGroup.Text>K</InputGroup.Text>
+                        <InputGroup.Text>K/porsi</InputGroup.Text>
                         </InputGroup.Append>
                     </InputGroup>
                 </Form.Group>

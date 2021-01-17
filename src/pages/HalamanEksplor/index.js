@@ -5,100 +5,111 @@ import { Button, InputGroup, FormControl } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 const HalamanEksplor = () => {
-  const params = useParams();
-  const history = useHistory();
-
-  const [recipes, setRecipes] = useState([]);
-  const [search, setSearch] = useState("");
-
-  useEffect(() => {
-    // get all posts data
-    Firebase.database()
-      .ref("posts/")
-      .orderByChild("timeId")
-      .once("value", orderAllPostsData);
-  }, []);
+    const params = useParams();
+    const history = useHistory();
+    const userLoginStatus = localStorage.getItem("userLoginStatus");
+    const [recipes, setRecipes] = useState([]);
+    const [search, setSearch] = useState("");
 
 
-  // order all posts data and save to posts state
-  const orderAllPostsData = (items) => {
-    const data = [];
-
-    items.forEach((item) => {
-      const oldData = item.val();
-      data.unshift(oldData);
-    });
-
-    setRecipes(data);
-  };
+    useEffect(() => {
+        // get all posts data
+        Firebase.database()
+        .ref("posts/")
+        .orderByChild("timeId")
+        .once("value", orderAllPostsData);
+    }, []);
 
 
-  const lihatResep = (key) => {
-    history.push(`/lihatresep/${key}`);
-  }
+    // order all posts data and save to posts state
+    const orderAllPostsData = (items) => {
+        const data = [];
+        
+        items.forEach((item) => {
+        const oldData = item.val();
+        data.unshift(oldData);
+        });
+        
+        setRecipes(data);
+    };
+
+
+    // view recipes when card is clicked
+    const lihatResep = (key) => {
+        history.push(`/lihatresep/${key}`);
+    }
   
 
-  const lihatAkun = (key) => {
-    const getDataAkun = localStorage.getItem("user");
-    const dataAkun = JSON.parse(getDataAkun)
+    // function view profile
+    const lihatAkun = (key) => {
+        const getDataAkun = localStorage.getItem("user");
+        const dataAkun = JSON.parse(getDataAkun)
 
-    if(dataAkun.uid===key){
-        history.push(`/halamanakun/${key}`);
-    } else {
+        if (userLoginStatus === "true"){
+            if(dataAkun.uid===key){
+                history.push(`/halamanakun/${key}`);
+            } else {
+                history.push(`/halamanakunlain/${key}`);
+            }
+        } else {
         history.push(`/halamanakunlain/${key}`);
+        }
+
     }
 
-  }
 
-
-  const onCariResep = () => {
-    console.log(search);
-    Firebase.database()
-      .ref("posts/")
-      .orderByChild("judul")
-      .startAt(`${search}`)
-      .endAt(`${search}/uf8ff`)
-      .once("value")
-      .then(res => {
-        if (res.val()){
-          const oldData = res.val();
-          const data = []
-          Object.keys(oldData).map(item => {
-            data.push(oldData[item])
-          })
-          setRecipes(data);
-        } else {
-          alert("Resep tidak ditemukan")
-        }
-      });
-  }
+    // function when search recipe clicked
+    const onCariResep = () => {
+        console.log(search);
+        Firebase.database()
+        .ref("posts/")
+        .orderByChild("judul")
+        .startAt(`${search}`)
+        .endAt(`${search}/uf8ff`)
+        .once("value")
+        .then(res => {
+            if (res.val()){
+                const oldData = res.val();
+                const data = []
+                Object.keys(oldData).map(item => {
+                    data.push(oldData[item])
+                })
+                setRecipes(data);
+            } else {
+                alert("Resep tidak ditemukan")
+            }
+        });
+    }
 
 
     return (
         <div className="halamaneksplor-container">
             <InputGroup className="mb-3">
                 <FormControl
-                placeholder="tuliskan judul resep"
-                aria-label="Recipient's username"
-                aria-describedby="basic-addon2"
-                className="halamaneksplor-searchbar"
-                value={search}
-                onChange={(e) => setSearch(e.target.value)}
+                    placeholder="tuliskan judul resep"
+                    aria-label="Recipient's username"
+                    aria-describedby="basic-addon2"
+                    className="halamaneksplor-searchbar"
+                    value={search}
+                    onChange={(e) => setSearch(e.target.value)}
                 />
                 <InputGroup.Append>
-                <Button variant="danger" onClick={onCariResep}>cari resep</Button>
+                    <Button variant="danger" onClick={onCariResep}>cari resep</Button>
                 </InputGroup.Append>
             </InputGroup>
 
+            {/* when recipes available */}
             {recipes && (
             <div className="halamaneksplor-grid">
 
+                {/* mapping recipes */}
                 {recipes.map(recipe => (
                 <div className="halamaneksplor-grid-item" key={recipe.postId}>
+                    {/* recipe card */}
                     <div className="halamaneksplor-grid-item-card">
                         <img onClick={() => lihatResep(recipe.postId)} src={recipe.urlPhoto} />
                         <div className="halamaneksplor-grid-item-card-desc">
-                            <h2 className="halamaneksplor-grid-item-card-desc-judul">{recipe.judul}</h2>
+                            <h2 className="halamaneksplor-grid-item-card-desc-judul" onClick={() => lihatResep(recipe.postId)}>{recipe.judul}</h2>
                             <p className="halamaneksplor-grid-item-card-desc-cerita">{recipe.cerita}</p>
                             <div className="halamaneksplor-grid-item-card-desc-info">
                                 <div>
@@ -108,7 +119,7 @@ const HalamanEksplor = () => {
                                 {recipe.biaya && (
                                 <div>
                                     <i className='bx bxs-dollar-circle'></i>
-                                    <p>Rp. {recipe.biaya}K</p>
+                                    <p>Rp. {recipe.biaya}K/porsi</p>
                                 </div>
                                 )}
                                 <div 

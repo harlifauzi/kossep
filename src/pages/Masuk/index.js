@@ -20,7 +20,6 @@ const Masuk = () => {
     const [open, setOpen] = React.useState(false);
     const [messageType, setMessageType] = useState("");
     const [message, setMessage] = useState("");
-
     const handleClose = (event, reason) => {
         if (reason === 'clickaway') {
             return;
@@ -72,9 +71,9 @@ const Masuk = () => {
         <div className="masuk-container">
             <div className="masuk-cards">
                 <div className="masuk-cards-left">
-                <h3>
-                    Makan apa ya hari ini? <br></br> Kuy liat resep terbaru!
-                </h3>
+                    <h3>
+                        Makan apa ya hari ini? <br></br> Kuy liat resep terbaru!
+                    </h3>
                 <div style={{ width: "100%" }}>
                     <div className="masuk-cards-left-form">
                         <input

@@ -7,7 +7,6 @@ import "bootstrap/dist/css/bootstrap.min.css";
 const HalamanAkun = () => {
     const params = useParams();
     const history = useHistory();
-
     const [userData, setUserData] = useState({});
     const [posts, setPosts] = useState([]);
     const [following, setFollowing] = useState([]);
@@ -25,12 +24,8 @@ const HalamanAkun = () => {
                     setUserData(data);
                 }
             })
-
-        // get posts data
-        // Firebase.database()
-        //     .ref(`users/${params.key}/posts/`)
-        //     .orderByChild("timeId")
-        //     .once("value", orderDataPost)
+        
+        // get recipes data
         Firebase.database()
             .ref(`posts/`)
             .orderByChild("chef/uid")
@@ -49,6 +44,7 @@ const HalamanAkun = () => {
 
     }, [])
 
+
     // order data posts from firebase and save to state posts
     const orderDataPost = (items) => {
         const data=[]
@@ -66,6 +62,7 @@ const HalamanAkun = () => {
         setPosts(data);
     }
 
+
     // order data following from firebase and save to state following
     const orderDataFollowing = (items) => {
         const data=[]
@@ -79,6 +76,7 @@ const HalamanAkun = () => {
         console.log({dataFollowing: data})
         setFollowing(data);
     }
+
 
     // order data followers from firebase and save to state following
     const orderDataFollowers = (items) => {
@@ -94,16 +92,19 @@ const HalamanAkun = () => {
         setFollowers(data);
     }
 
+
+    // view profile
     const lihatResep = (key) => {
         history.push(`/lihatresep/${key}`);
     }
+
 
     return (
         <div className="halamanakun-container">
             <div className="halamanakun-userinfo">
                 <div className="halamanakun-userinfo-name">
                     <div className="halamanakun-userinfo-name-img">
-                        <i className='bx bxs-user'></i>
+                        {userData.photo ? (<img src={userData.photo} alt=""/>) : (<i className='bx bxs-user'></i>)}
                     </div>
                     <p>{userData.namaLengkap}</p>
                     <Button variant="info" onClick={() => history.push(`/pengaturanakun/${userData.uid}`)}>Edit profile</Button>
@@ -117,15 +118,19 @@ const HalamanAkun = () => {
                 </div>
             </div>
             <hr></hr>
+            
+            {/* when posts available */}
             {posts && (
             <div className="halamanakun-grid">
 
+                {/* mapping posts */}
                 {posts.map(recipe => (
                 <div className="halamanakun-grid-item" key={recipe.id}>
+                    {/* post card */}
                     <div className="halamanakun-grid-item-card">
                         <img onClick={() => lihatResep(recipe.id)} src={recipe.data.urlPhoto} />
                         <div className="halamanakun-grid-item-card-desc">
-                            <h2 className="halamanakun-grid-item-card-desc-judul">{recipe.data.judul}</h2>
+                            <h2 className="halamanakun-grid-item-card-desc-judul" onClick={() => lihatResep(recipe.id)}>{recipe.data.judul}</h2>
                             <p className="halamanakun-grid-item-card-desc-cerita">{recipe.data.cerita}</p>
                             <div className="halamanakun-grid-item-card-desc-info">
                                 <div>
@@ -144,6 +149,14 @@ const HalamanAkun = () => {
                 </div>
                 ))}
 
+            </div>
+            )}
+
+            {/* when zero posts */}
+            {posts.length === 0 && (
+            <div className="zero-posts">
+                <i class='bx bx-book-open'></i>
+                <p>Tidak ada resep</p>
             </div>
             )}
         </div>

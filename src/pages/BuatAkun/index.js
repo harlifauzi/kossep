@@ -21,12 +21,10 @@ const BuatAkun = () => {
     const [open, setOpen] = React.useState(false);
     const [messageType, setMessageType] = useState("");
     const [message, setMessage] = useState("");
-
     const handleClose = (event, reason) => {
         if (reason === 'clickaway') {
             return;
         }
-
         setOpen(false);
         if(messageType==="success"){
             history.push("/");
@@ -48,7 +46,6 @@ const BuatAkun = () => {
             setMessage("Oops, isi dulu kata sandi yuk!");
             return setOpen(true);
         }
-
         Firebase.auth()
         .createUserWithEmailAndPassword(alamatEmail, kataSandi)
             .then((res) => {
@@ -84,9 +81,7 @@ const BuatAkun = () => {
                     setMessage("Oops, minimal kata sandi 6 karakter ya!")
                     setOpen(true);
                 }
-
-                console.log("error: ", err);
-                // alert(err.message);
+                alert("error: ", err);
             });
     };
 

@@ -8,6 +8,7 @@ import HalamanAkunLain from './HalamanAkunLain';
 import HalamanEksplor from './HalamanEksplor';
 import PengaturanAkun from './PengaturanAkun';
 import Recook from './Recook';
+import AboutUs from './AboutUs';
 
 export {
     BuatAkun,
@@ -20,4 +21,5 @@ export {
     HalamanEksplor,
     PengaturanAkun,
     Recook,
+    AboutUs,
 }
