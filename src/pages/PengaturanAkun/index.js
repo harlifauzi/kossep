@@ -31,6 +31,8 @@ const PengaturanAkun = () => {
 
     // <snackbar function>
     const [open, setOpen] = React.useState(false);
+    const [message, setMessage] = useState("")
+    const [messageType, setMessageType] = useState("")
     const handleClose = (event, reason) => {
         if (reason === 'clickaway') {
             return;
@@ -60,7 +62,7 @@ const PengaturanAkun = () => {
             .then(res => {
                 setUserData(res.val())
             })
-    }, [])
+    }, [setOpen])
 
 
     // execute when photo state change
@@ -68,6 +70,8 @@ const PengaturanAkun = () => {
         if (photo) {
             postImage();
         }
+
+        document.title = `Kossep | Pengaturan akun`
     }, [photo]);
 
 
@@ -94,11 +98,17 @@ const PengaturanAkun = () => {
             Firebase.database()
                 .ref(`users/${params.key}/photo/`)
                 .set(data.url);
+            userData.photo = data.url
             setOpenBackdrop(false);
+            setMessage("Berhasil upload foto");
+            setMessageType("success")
+            setOpen(true);
         })
         .catch(err => {
             setOpenBackdrop(false);
-            alert(err);
+            setMessage("Gagal upload foto");
+            setMessageType("error")
+            setOpen(true);
         });
     };
 
@@ -156,8 +166,8 @@ const PengaturanAkun = () => {
             <Button className="pengaturanakun-button" variant="danger" onClick={onNonAktif}>Nonaktifkan akun</Button>
             
             <Snackbar open={open} autoHideDuration={3000} onClose={handleClose}>
-                <Alert onClose={handleClose} severity="error">
-                    fitur ini belum tersedia
+                <Alert onClose={handleClose} severity={messageType}>
+                    {message}
                 </Alert>
             </Snackbar>
 

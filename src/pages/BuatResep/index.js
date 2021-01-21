@@ -7,6 +7,15 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import Backdrop from '@material-ui/core/Backdrop';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import { makeStyles } from '@material-ui/core/styles';
+import Snackbar from '@material-ui/core/Snackbar';
+import MuiAlert from '@material-ui/lab/Alert';
+
+
+// <snackbar function>
+function Alert(props) {
+    return <MuiAlert elevation={6} variant="filled" {...props} />;
+}
+// </snackbar function>
 
 
 // style backdrop
@@ -22,6 +31,24 @@ const useStyles = makeStyles((theme) => ({
 const BuatResep = () => {
     const classes = useStyles();                //backdrop
     const [open, setOpen] = useState(false);    //backdrop
+
+
+    // <snackbar function>
+    const [openSnackbar, setOpenSnackbar] = React.useState(false);
+    const [messageType, setMessageType] = useState("");
+    const [message, setMessage] = useState("");
+    const handleClose = (event, reason) => {
+        if (reason === 'clickaway') {
+            return;
+        }
+
+        setOpen(false);
+        if(messageType==="success"){
+            history.push(`/halamanutama/${dataPost.chef.uid}`);
+        }
+    };
+    // </snackbar function>
+
 
     const history = useHistory();
     const [judul, setJudul] = useState("");
@@ -113,13 +140,25 @@ const BuatResep = () => {
         console.log({ dataPost });
         Firebase.database()
             .ref(`posts/${dataPost.postId}/`)
-            .set(dataPost);
-        history.push(`/halamanutama/${dataPost.chef.uid}`);
+            .set(dataPost)
+            .then(res => {
+                setMessage("Resep telah dibuat")
+                setMessageType("success")
+                setOpenSnackbar(true)
+            })
+            .catch(err => {
+                setMessage("Gagal buat resep")
+                setMessageType("error")
+                setOpenSnackbar(true)
+            })
+        
+        // history.push(`/halamanutama/${dataPost.chef.uid}`);
     };
 
 
     // execute when photo state change
     useEffect(() => {
+        document.title = "Kossep | Buat resep"
         if (photo) {
             postImage();
         }
@@ -258,6 +297,12 @@ const BuatResep = () => {
                 <CircularProgress color="inherit" />
             </Backdrop>
             {/* /backdrop */}
+
+            <Snackbar open={openSnackbar} autoHideDuration={3000} onClose={handleClose}>
+                <Alert onClose={handleClose} severity={messageType}>
+                    {message}
+                </Alert>
+            </Snackbar>
 
         </div>
     );

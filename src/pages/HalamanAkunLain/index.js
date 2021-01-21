@@ -73,6 +73,8 @@ const HalamanAkunLain = () => {
             .ref(`users/${params.key}/followers/`)
             .once("value", orderDataFollowers)
 
+        document.title = `Kossep | Profil`
+
     }, [])
     
 

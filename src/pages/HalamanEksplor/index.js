@@ -16,6 +16,8 @@ const HalamanEksplor = () => {
 
 
     useEffect(() => {
+        document.title = "Kossep | Explore"
+
         // get all posts data
         Firebase.database()
             .ref("posts/")
@@ -29,7 +31,8 @@ const HalamanEksplor = () => {
         const data = [];
         
         items.forEach((item) => {
-            const oldData = item.val();Firebase.database()
+            const oldData = item.val();
+            Firebase.database()
                 .ref(`users/${oldData.chef.uid}`)
                 .once("value")
                 .then(res => {

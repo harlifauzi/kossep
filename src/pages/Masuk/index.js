@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Firebase } from "../../config";
 import { useHistory } from "react-router-dom";
 import { ILSignIn } from '../../assets/illustrations';
@@ -15,6 +15,7 @@ const Masuk = () => {
     const history = useHistory();
     const [alamatEmail, setAlamatEmail] = useState("");
     const [kataSandi, setKataSandi] = useState("");
+    const [userData, setUserData] = useState("")
 
     // <snackbar function>
     const [open, setOpen] = React.useState(false);
@@ -27,10 +28,16 @@ const Masuk = () => {
 
         setOpen(false);
         if(messageType==="success"){
-            history.push("/");
+            // history.push(`/halamanutama/${userData.uid}`);
         }
     };
     // </snackbar function>
+
+
+    useEffect(() => {
+        document.title = "Kossep | Masuk"
+    })
+
 
     const onMasuk = () => {
         if( !alamatEmail ){
@@ -46,6 +53,7 @@ const Masuk = () => {
         Firebase.auth()
         .signInWithEmailAndPassword(alamatEmail, kataSandi)
             .then(res => {
+                setUserData(res.user)
                 setMessageType("success");
                 setMessage("Yeay, kamu berhasil masuk!");
                 setOpen(true);

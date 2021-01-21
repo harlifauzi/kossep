@@ -13,6 +13,8 @@ const HalamanUtama = () => {
 
 
     useEffect(() => {
+        document.title = "Kossep"
+
         if (userLoginStatus === "false"){
             history.push("/halamaneksplor/undifined")
         }
@@ -42,7 +44,6 @@ const HalamanUtama = () => {
                                 setSiap(false)
                                 const chef = res.val();
                                 recipe.chef = chef;
-                                console.log(recipe)
                                 recipes.push(recipe)
                                 setSiap(true)
                             })

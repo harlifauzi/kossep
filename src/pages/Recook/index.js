@@ -7,6 +7,8 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import Backdrop from '@material-ui/core/Backdrop';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import { makeStyles } from '@material-ui/core/styles';
+import Snackbar from '@material-ui/core/Snackbar';
+import MuiAlert from '@material-ui/lab/Alert';
 
 
 // style backdrop
@@ -17,6 +19,13 @@ const useStyles = makeStyles((theme) => ({
     },
   }));
 // /style backdrop
+
+
+// <snackbar function>
+function Alert(props) {
+    return <MuiAlert elevation={6} variant="filled" {...props} />;
+}
+// </snackbar function>
 
 
 const Recook = () => {
@@ -49,6 +58,23 @@ const Recook = () => {
         timeId: "",
         recookFrom,
     };
+
+
+    // <snackbar function>
+    const [openSnackbar, setOpenSnackbar] = React.useState(false);
+    const [messageType, setMessageType] = useState("");
+    const [message, setMessage] = useState("");
+    const handleClose = (event, reason) => {
+        if (reason === 'clickaway') {
+            return;
+        }
+
+        setOpen(false);
+        if(messageType==="success"){
+            history.push(`/halamanutama/${dataPost.chef.uid}`);
+        }
+    };
+    // </snackbar function>
 
 
     // function form bahan
@@ -123,7 +149,11 @@ const Recook = () => {
         .ref(`posts/${currentRecipe.postId}/recookBy/${dataPost.postId}/`)
         .set(dataPost);
 
-        history.push(`/halamanutama/${dataPost.chef.uid}`);
+        setMessage("Recook berhasil")
+        setMessageType("success")
+        setOpenSnackbar(true)
+
+        // history.push(`/halamanutama/${dataPost.chef.uid}`);
     };
 
 
@@ -159,6 +189,8 @@ const Recook = () => {
             .catch(err => {
                 alert("resep tidak ditemukan");
             })
+
+        document.title = `Kossep | Recook`
     }, []);
 
 
@@ -311,6 +343,12 @@ const Recook = () => {
                     <CircularProgress color="inherit" />
                 </Backdrop>
                 {/* /backdrop */}
+
+                <Snackbar open={openSnackbar} autoHideDuration={3000} onClose={handleClose}>
+                    <Alert onClose={handleClose} severity={messageType}>
+                        {message}
+                    </Alert>
+                </Snackbar>
             </Form>
         </div>
     )

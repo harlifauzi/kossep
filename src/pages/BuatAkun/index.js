@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Firebase } from "../../config";
 import { useHistory } from "react-router-dom";
 import { ILSignUp } from "../../assets/illustrations";
@@ -31,6 +31,12 @@ const BuatAkun = () => {
         }
     };
     // </snackbar function>
+
+
+    useEffect(() => {
+        document.title="Kossep | Buat akun";
+    }, [])
+
 
     const onBuatAkun = () => {
         if( !namaLengkap ){

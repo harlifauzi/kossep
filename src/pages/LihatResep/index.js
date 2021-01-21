@@ -128,6 +128,8 @@ const LihatResep = () => {
                 });
             }
         });
+
+        document.title = `Kossep | Resep`
     }, [recookParam]);
 
 
@@ -159,16 +161,17 @@ const LihatResep = () => {
                     komen: newComment,
                     byUser,
                 },
+                photo: byUser.photo
             };
 
             // set comment on recipe's database
             console.log(data);
             Firebase.database().ref(`posts/${params.key}/komentar/${id}`).set(data);
 
-            const currentComment = [...comment];
-            currentComment.push(dataTemporary);
-            setComment(currentComment);
+            setCommentReady(false)
+            setComment([...comment, dataTemporary])
             setNewComment("");
+            setCommentReady(true)
         } else {
             setMessageType("error");
             setMessage("Kamu harus masuk terlebih dahulu");
@@ -179,9 +182,9 @@ const LihatResep = () => {
 
     // function when button hapus clicked
     const onHapus = () => {
-        Firebase.database().ref(`posts/${params.key}`).remove();
+        Firebase.database().ref(`posts/${params.key}/`).remove();
         setMessage("Resep telah dihapus");
-        setMessage("error");
+        setMessageType("error");
         setOpen(true);
     };
 
