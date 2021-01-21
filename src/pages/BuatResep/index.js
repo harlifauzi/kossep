@@ -1,7 +1,8 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useHistory } from "react-router-dom";
 import { v4 as uuidv4 } from "uuid";
 import { Firebase } from "../../config";
+import firebase from 'firebase';
 import { Form, Button, InputGroup, FormControl } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 import Backdrop from '@material-ui/core/Backdrop';
@@ -11,29 +12,28 @@ import Snackbar from '@material-ui/core/Snackbar';
 import MuiAlert from '@material-ui/lab/Alert';
 
 
-// <snackbar function>
+// snackbar
 function Alert(props) {
     return <MuiAlert elevation={6} variant="filled" {...props} />;
 }
-// </snackbar function>
 
 
-// style backdrop
+// backdrop
 const useStyles = makeStyles((theme) => ({
     backdrop: {
         zIndex: theme.zIndex.drawer + 1,
         color: '#fff',
     },
 }));
-// /style backdrop
 
 
 const BuatResep = () => {
-    const classes = useStyles();                //backdrop
-    const [open, setOpen] = useState(false);    //backdrop
+    // backdrop
+    const classes = useStyles();            
+    const [openBackdrop, setOpenBackdrop] = useState(false);
 
 
-    // <snackbar function>
+    // snackbar
     const [openSnackbar, setOpenSnackbar] = React.useState(false);
     const [messageType, setMessageType] = useState("");
     const [message, setMessage] = useState("");
@@ -42,127 +42,124 @@ const BuatResep = () => {
             return;
         }
 
-        setOpen(false);
+        setOpenSnackbar(false);
         if(messageType==="success"){
-            history.push(`/halamanutama/${dataPost.chef.uid}`);
+            history.push(`/halamanutama/${resep.chef.uid}`);
         }
     };
-    // </snackbar function>
 
 
+    const uploadPhoto = useRef();
     const history = useHistory();
-    const [judul, setJudul] = useState("");
-    const [cerita, setCerita] = useState("");
-    const [waktu, setWaktu] = useState("");
-    const [bahanResep, setBahanResep] = useState([{ namaBahan: "" }]);
-    const [langkahResep, setLangkahResep] = useState([{ namaLangkah: "" }]);
-    const [biaya, setBiaya] = useState("");
-    const [urlPhoto, setUrlPhoto] = useState("");
     const [photo, setPhoto] = useState("");
-    const dataPost = {
-        postId: "",
-        judul,
-        cerita,
-        waktu,
-        bahanResep,
-        langkahResep,
-        biaya,
-        urlPhoto,
+    const [resep, setResep] = useState({
+        postId: uuidv4(),
+        judul: '',
+        cerita: '',
+        waktu: '',
+        bahan: [{ item: "" }],
+        langkah: [{ item: "" }],
+        biaya: '',
+        urlPhoto: '',
         chef: JSON.parse(localStorage.getItem("user")),
-        waktuPost: "",
-        timeId: "",
-    };
+        waktuPost: '',
+        timestamp: ''
+    });
+
+
+    // firing when photo state change
+    useEffect(() => {
+        document.title = "Kossep | Buat resep";
+        if (photo) {
+            postImage();
+        }
+    }, [photo]);
 
 
     // function form bahan
     const handleBahanChangeInput = (index, event) => {
-        const values = [...bahanResep];
+        const values = [...resep.bahan];
         values[index][event.target.name] = event.target.value;
-        setBahanResep(values);
+        setResep({...resep, bahan: values});
     };
     const handleBahanAddInput = () => {
-        setBahanResep([...bahanResep, { namaBahan: "" }]);
+        const values = [...resep.bahan, {item: ''}];
+        setResep({...resep, bahan: values});
     };
     const handleBahanRemoveInput = (index) => {
-        const values = [...bahanResep];
+        const values = [...resep.bahan];
         values.splice(index, 1);
-        setBahanResep(values);
+        setResep({...resep, bahan: values});
     };
 
 
     // function form langkah
     const handleLangkahChangeInput = (index, event) => {
-        const values = [...langkahResep];
+        const values = [...resep.langkah];
         values[index][event.target.name] = event.target.value;
-        setLangkahResep(values);
+        setResep({...resep, langkah: values});
     };
     const handleLangkahAddInput = () => {
-        setLangkahResep([...langkahResep, { namaLangkah: "" }]);
+        const values = [...resep.langkah, {item: ''}]
+        setResep({...resep, langkah: values});
     };
     const handleLangkahRemoveInput = (index) => {
-        const values = [...langkahResep];
+        const values = [...resep.langkah];
         values.splice(index, 1);
-        setLangkahResep(values);
+        setResep({...resep, langkah: values})
     };
 
 
     // upload to cloudinary
     const postImage = async () => {
-        setOpen(true);
+        setOpenBackdrop(true);
         const data = new FormData();
         data.append("file", photo);
         data.append("upload_preset", "kossep");
         data.append("cloud_name", "harleykwen");
         await fetch("https://api.cloudinary.com/v1_1/harleykwen/image/upload", {
-        method: "post",
-        body: data,
+            method: "post",
+            body: data,
         })
-        .then((res) => res.json())
-        .then((data) => {
-            console.log({ successUpload: data });
-            setUrlPhoto(data.url);
-            setOpen(false)
-        })
-        .catch((err) => {
-            console.log(err)
-            setOpen(false)
-        });
+            .then(res => res.json())
+            .then(data => {
+                console.log({ successUpload: data });
+                setResep({...resep, urlPhoto: data.url})
+                setOpenBackdrop(false);
+            })
+            .catch(err => {
+                console.log(err);
+                setOpenBackdrop(false);
+            });
     };
 
 
     //function when button buat resep clicked
     const onBuatResep = () => {
-        const today = new Date();
-        const date = today.getDate() + "-" + (today.getMonth() + 1) + "-" + today.getFullYear();
-        dataPost.postId = uuidv4();
-        dataPost.waktuPost = date;
-        dataPost.timeId = today.getTime();
-        console.log({ dataPost });
-        Firebase.database()
-            .ref(`posts/${dataPost.postId}/`)
-            .set(dataPost)
-            .then(res => {
-                setMessage("Resep telah dibuat")
-                setMessageType("success")
-                setOpenSnackbar(true)
-            })
-            .catch(err => {
-                setMessage("Gagal buat resep")
-                setMessageType("error")
-                setOpenSnackbar(true)
-            })
-        
-        // history.push(`/halamanutama/${dataPost.chef.uid}`);
-    };
-
-
-    // execute when photo state change
-    useEffect(() => {
-        document.title = "Kossep | Buat resep"
-        if (photo) {
-            postImage();
+        if ( resep.judul === '' || resep.cerita === '' || resep.waktu === '' || resep.biaya === '' || resep.urlPhoto === '' ){
+            setMessageType('error');
+            setMessage('pastikan semua data sudah diisi');
+            setOpenSnackbar(true);
+        } else {
+            const today = new Date();
+            const date = today.getDate() + "-" + (today.getMonth() + 1) + "-" + today.getFullYear();
+            setResep({...resep, waktuPost: date});
+            setResep({...resep, timestamp: firebase.database.ServerValue.TIMESTAMP});
+            Firebase.database()
+                .ref(`posts/${resep.postId}/`)
+                .set(resep)
+                .then(res => {
+                    setMessage("Resep telah dibuat")
+                    setMessageType("success")
+                    setOpenSnackbar(true)
+                })
+                .catch(err => {
+                    setMessage("Gagal buat resep")
+                    setMessageType("error")
+                    setOpenSnackbar(true)
+                });
         }
-    }, [photo]);
+    };
 
 
     return (
@@ -174,8 +171,8 @@ const BuatResep = () => {
                         className="buatresep-form-judul"
                         type="text"
                         placeholder="judul"
-                        value={judul}
-                        onChange={(e) => setJudul(e.target.value)}
+                        value={resep.judul}
+                        onChange={(e) => setResep({...resep, judul: e.target.value})}
                     />
                 </Form.Group>
 
@@ -184,8 +181,8 @@ const BuatResep = () => {
                     <Form.Control
                         type="text"
                         placeholder="cerita dibalik resep ini"
-                        value={cerita}
-                        onChange={(e) => setCerita(e.target.value)}
+                        value={resep.cerita}
+                        onChange={(e) => setResep({...resep, cerita: e.target.value})}
                     />
                     </Form.Group>
 
@@ -194,23 +191,23 @@ const BuatResep = () => {
                     <Form.Control
                         type="text"
                         placeholder="lama masak"
-                        value={waktu}
-                        onChange={(e) => setWaktu(e.target.value)}
+                        value={resep.waktu}
+                        onChange={(e) => setResep({...resep, waktu: e.target.value})}
                     />
                 </Form.Group>
 
                 <Form.Group className="buatresep-bahan-wrapper">
                     <Form.Label>Bahan-bahan</Form.Label>
-                    {bahanResep.map((bahan, index) => (
+                    {resep.bahan.map((bahan, index) => (
                         <InputGroup className="mb-3" key={index}>
                         <p>{index+1}.</p>
                         <FormControl
                             className="buatresep-bahan-formcontrol"
                             placeholder="nama bahan"
                             aria-describedby="basic-addon2"
-                            name="namaBahan"
+                            name="item"
                             type="text"
-                            value={bahan.namaBahan}
+                            value={bahan.item}
                             onChange={(event) => handleBahanChangeInput(index, event)}
                         />
                         <InputGroup.Append>
@@ -230,16 +227,16 @@ const BuatResep = () => {
 
                 <Form.Group className="buatresep-langkah-wrapper">
                     <Form.Label>Langkah-langkah</Form.Label>
-                    {langkahResep.map((langkah, index) => (
+                    {resep.langkah.map((langkah, index) => (
                         <InputGroup className="mb-3" key={index}>
                         <p>{index+1}.</p>
                         <FormControl
                             className="buatresep-langkah-formcontrol"
                             placeholder="nama langkah"
                             aria-describedby="basic-addon2"
-                            name="namaLangkah"
+                            name="item"
                             type="text"
-                            value={langkah.namaLangkah}
+                            value={langkah.item}
                             onChange={(event) => handleLangkahChangeInput(index, event)}
                         />
                         <InputGroup.Append>
@@ -265,8 +262,8 @@ const BuatResep = () => {
                         </InputGroup.Prepend>
                         <FormControl 
                         aria-label="Amount (to the nearest dollar)"
-                        value={biaya}
-                        onChange={(e) => setBiaya(e.target.value)} 
+                        value={resep.biaya}
+                        onChange={(e) => setResep({...resep, biaya: e.target.value})} 
                         maxLength={2}
                         />
                         <InputGroup.Append>
@@ -278,26 +275,46 @@ const BuatResep = () => {
                 <InputGroup className="mb-3">
                     <FormControl
                         aria-describedby="basic-addon1"
+                        ref={uploadPhoto}
+                        style={{display: 'none'}}
                         type="file"
+                        accept="image/*" 
                         onChange={(e) => setPhoto(e.target.files[0])}
                     />
                 </InputGroup>
+
+                <div className='buatresep-form-photo'>
+                        {resep.urlPhoto === '' ? (
+                            <p onClick={() => uploadPhoto.current.click()}>unggah foto</p>
+                        ) : (
+                            <>
+                                <img src={resep.urlPhoto} alt='' />
+                                <p 
+                                    className='ubah-foto'
+                                    onClick={() => uploadPhoto.current.click()}
+                                >
+                                    ubah foto
+                                </p>
+                            </>
+                        )}
+                </div>
 
                 <Button
                     variant="warning"
                     className="ml-auto mr-auto"
                     onClick={onBuatResep}
+                    style={{width: '100%'}}
                 >
                     Buat resep
                 </Button>
             </Form>
 
             {/* backdrop */}
-            <Backdrop className={classes.backdrop} open={open}>
+            <Backdrop className={classes.backdrop} open={openBackdrop}>
                 <CircularProgress color="inherit" />
             </Backdrop>
-            {/* /backdrop */}
 
+            {/* snackbar */}
             <Snackbar open={openSnackbar} autoHideDuration={3000} onClose={handleClose}>
                 <Alert onClose={handleClose} severity={messageType}>
                     {message}

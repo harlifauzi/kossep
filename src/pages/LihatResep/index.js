@@ -41,7 +41,8 @@ const LihatResep = () => {
 
         setOpen(false);
         if (message === "Resep telah dihapus"){
-            history.push(`/halamanutama/${myData.uid}`);
+            // history.push(`/halamanutama/${myData.uid}`);
+            history.goBack();
         }
     };
     // </snackbar function>
@@ -255,7 +256,7 @@ const LihatResep = () => {
 
                     <Form.Group>
                     <Form.Label className="subtitle">Bahan-bahan</Form.Label>
-                    {resep.bahanResep.map((bahan, index) => (
+                    {resep.bahan.map((bahan, index) => (
                         <div className="subtitle-underline" key={index}>
                             <p className="subtitle-underline-number">
                                 {index + 1}.
@@ -270,7 +271,7 @@ const LihatResep = () => {
 
                     <Form.Group>
                     <Form.Label className="subtitle">Langkah-langkah</Form.Label>
-                    {resep.langkahResep.map((langkah, index) => (
+                    {resep.langkah.map((langkah, index) => (
                         <div className="subtitle-underline" key={index}>
                             <p className="subtitle-underline-number">
                                 {index + 1}.

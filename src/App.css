@@ -656,12 +656,45 @@ h1,h2,h3,h4,h5,h6,p{
 .buatresep-bahan-wrapper p, .buatresep-langkah-wrapper p{
   top: 15%;
   color: #f3a303;
-  font-weight: 600;
   position: absolute;
 }
 
 .buatresep-bahan-formcontrol, .buatresep-langkah-formcontrol{
   margin-left: 1.5rem;
+}
+
+.buatresep-form-photo{
+  display: flex;
+  background-color: #E9ECEF;
+  height: 300px;
+  margin-bottom: 2rem;
+  margin-top: -1.75rem;
+}
+
+.buatresep-form-photo p{
+  margin: auto;
+  background-color: #fcb629;
+  padding: 5px;
+  border-radius: 5px;
+}
+
+.buatresep-form-photo p:hover{
+  cursor: pointer;
+}
+
+.buatresep-form-photo img{
+  object-fit: cover;
+  height: 300px;
+  width: 100%;
+}
+
+.buatresep-form-photo .ubah-foto{
+  position: absolute;
+  margin-top: 10px;
+  margin-left: 10px;
+  background-color: #fcb629;
+  padding: 5px;
+  border-radius: 5px;
 }
 
 /* LihatResep */
@@ -862,6 +895,7 @@ h1,h2,h3,h4,h5,h6,p{
   display: flex;
   flex-direction: column;
   padding: 20px;
+  min-height: calc(100vh - 55px);
 }
 
 .halamanakun-userinfo{

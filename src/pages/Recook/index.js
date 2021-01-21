@@ -174,13 +174,13 @@ const Recook = () => {
                     setBiaya(oldData.biaya);
 
                     const newDataBahan = [];
-                    oldData.bahanResep.map(item => {
+                    oldData.bahan.map(item => {
                         newDataBahan.push(item);
                     })
                     setBahanResep(newDataBahan);
 
                     const newDataLangkah = [];
-                    oldData.langkahResep.map(item => {
+                    oldData.langkah.map(item => {
                         newDataLangkah.push(item);
                     })
                     setLangkahResep(newDataLangkah);
