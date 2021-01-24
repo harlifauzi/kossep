@@ -1344,6 +1344,40 @@ h1,h2,h3,h4,h5,h6,p{
   margin-left: 1.5rem;
 }
 
+.recook-form-photo{
+  display: flex;
+  background-color: #E9ECEF;
+  height: 300px;
+  margin-bottom: 2rem;
+  margin-top: -1.75rem;
+}
+
+.recook-form-photo p{
+  margin: auto;
+  background-color: #fcb629;
+  padding: 5px;
+  border-radius: 5px;
+}
+
+.recook-form-photo p:hover{
+  cursor: pointer;
+}
+
+.recook-form-photo img{
+  object-fit: cover;
+  height: 300px;
+  width: 100%;
+}
+
+.recook-form-photo .ubah-foto{
+  position: absolute;
+  margin-top: 10px;
+  margin-left: 10px;
+  background-color: #fcb629;
+  padding: 5px;
+  border-radius: 5px;
+}
+
 
 /* AboutUs */
 .aboutus-container{

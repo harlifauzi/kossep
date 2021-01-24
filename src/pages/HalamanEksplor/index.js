@@ -12,38 +12,28 @@ const HalamanEksplor = () => {
     const [recipes, setRecipes] = useState([]);
     const [search, setSearch] = useState("");
 
-    const [siap, setSiap] = useState(false)
 
-
-    useEffect(() => {
+    useEffect( async () => {
         document.title = "Kossep | Explore"
 
         // get all posts data
-        Firebase.database()
+        const getRecipes = await Firebase.database()
             .ref("posts/")
-            .orderByChild("timeId")
+            .orderByChild("timestamp")
             .once("value", orderAllPostsData);
+        
     }, []);
 
 
     // order all posts data and save to posts state
     const orderAllPostsData = (items) => {
+        const recipes = items;
         const data = [];
-        
-        items.forEach((item) => {
-            const oldData = item.val();
-            Firebase.database()
-                .ref(`users/${oldData.chef.uid}`)
-                .once("value")
-                .then(res => {
-                    setSiap(false)
-                    const chef = res.val();
-                    oldData.chef = chef;
-                    data.unshift(oldData);
-                    setRecipes(data)
-                    setSiap(true)
-                })
-        });
+        recipes.forEach(item => {
+            const resep = item.val();
+            data.unshift(resep);
+        })
+        setRecipes(data);
     };
 
 
@@ -83,13 +73,13 @@ const HalamanEksplor = () => {
         .then(res => {
             if (res.val()){
                 const oldData = res.val();
-                const data = []
+                const data = [];
                 Object.keys(oldData).map(item => {
-                    data.push(oldData[item])
+                    data.push(oldData[item]);
                 })
                 setRecipes(data);
             } else {
-                alert("Resep tidak ditemukan")
+                alert("Resep tidak ditemukan");
             }
         });
     }

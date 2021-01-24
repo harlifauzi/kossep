@@ -48,23 +48,31 @@ const BuatResep = () => {
         }
     };
 
-
     const uploadPhoto = useRef();
     const history = useHistory();
+
+    const [judul, setJudul] = useState('');
+    const [cerita, setCerita] = useState('');
+    const [waktu, setWaktu] = useState('');
+    const [bahan, setBahan] = useState([{item: ''}]);
+    const [langkah, setLangkah] = useState([{item: ''}]);
+    const [biaya, setBiaya] = useState('');
+    const [urlPhoto, setUrlPhoto] = useState('');
+
     const [photo, setPhoto] = useState("");
-    const [resep, setResep] = useState({
-        postId: uuidv4(),
-        judul: '',
-        cerita: '',
-        waktu: '',
-        bahan: [{ item: "" }],
-        langkah: [{ item: "" }],
-        biaya: '',
-        urlPhoto: '',
+    const resep = {
+        postId: '',
+        judul,
+        cerita,
+        waktu,
+        bahan,
+        langkah,
+        biaya,
+        urlPhoto,
         chef: JSON.parse(localStorage.getItem("user")),
         waktuPost: '',
         timestamp: ''
-    });
+    };
 
 
     // firing when photo state change
@@ -78,35 +86,33 @@ const BuatResep = () => {
 
     // function form bahan
     const handleBahanChangeInput = (index, event) => {
-        const values = [...resep.bahan];
+        const values = [...bahan];
         values[index][event.target.name] = event.target.value;
-        setResep({...resep, bahan: values});
+        setBahan(values);
     };
     const handleBahanAddInput = () => {
-        const values = [...resep.bahan, {item: ''}];
-        setResep({...resep, bahan: values});
+        setBahan([...bahan, {item: ''}]);
     };
     const handleBahanRemoveInput = (index) => {
-        const values = [...resep.bahan];
+        const values = [...bahan];
         values.splice(index, 1);
-        setResep({...resep, bahan: values});
+        setBahan(values);
     };
 
 
     // function form langkah
     const handleLangkahChangeInput = (index, event) => {
-        const values = [...resep.langkah];
+        const values = [...langkah];
         values[index][event.target.name] = event.target.value;
-        setResep({...resep, langkah: values});
+        setLangkah(values);
     };
     const handleLangkahAddInput = () => {
-        const values = [...resep.langkah, {item: ''}]
-        setResep({...resep, langkah: values});
+        setLangkah([...langkah, {item: ''}]);
     };
     const handleLangkahRemoveInput = (index) => {
-        const values = [...resep.langkah];
+        const values = [...langkah];
         values.splice(index, 1);
-        setResep({...resep, langkah: values})
+        setLangkah(values);
     };
 
 
@@ -124,7 +130,7 @@ const BuatResep = () => {
             .then(res => res.json())
             .then(data => {
                 console.log({ successUpload: data });
-                setResep({...resep, urlPhoto: data.url})
+                setUrlPhoto(data.url);
                 setOpenBackdrop(false);
             })
             .catch(err => {
@@ -135,7 +141,7 @@ const BuatResep = () => {
 
 
     //function when button buat resep clicked
-    const onBuatResep = () => {
+    const onBuatResep = async () => {
         if ( resep.judul === '' || resep.cerita === '' || resep.waktu === '' || resep.biaya === '' || resep.urlPhoto === '' ){
             setMessageType('error');
             setMessage('pastikan semua data sudah diisi');
@@ -143,20 +149,23 @@ const BuatResep = () => {
         } else {
             const today = new Date();
             const date = today.getDate() + "-" + (today.getMonth() + 1) + "-" + today.getFullYear();
-            setResep({...resep, waktuPost: date});
-            setResep({...resep, timestamp: firebase.database.ServerValue.TIMESTAMP});
+            
+            resep.waktuPost = date;
+            resep.timestamp = firebase.database.ServerValue.TIMESTAMP;
+            resep.postId = uuidv4();
+
             Firebase.database()
                 .ref(`posts/${resep.postId}/`)
                 .set(resep)
                 .then(res => {
-                    setMessage("Resep telah dibuat")
-                    setMessageType("success")
-                    setOpenSnackbar(true)
+                    setMessage("Resep telah dibuat");
+                    setMessageType("success");
+                    setOpenSnackbar(true);
                 })
                 .catch(err => {
-                    setMessage("Gagal buat resep")
-                    setMessageType("error")
-                    setOpenSnackbar(true)
+                    setMessage("Gagal buat resep");
+                    setMessageType("error");
+                    setOpenSnackbar(true);
                 });
         }
     };
@@ -171,8 +180,8 @@ const BuatResep = () => {
                         className="buatresep-form-judul"
                         type="text"
                         placeholder="judul"
-                        value={resep.judul}
-                        onChange={(e) => setResep({...resep, judul: e.target.value})}
+                        value={judul}
+                        onChange={(e) => setJudul(e.target.value)}
                     />
                 </Form.Group>
 
@@ -181,24 +190,24 @@ const BuatResep = () => {
                     <Form.Control
                         type="text"
                         placeholder="cerita dibalik resep ini"
-                        value={resep.cerita}
-                        onChange={(e) => setResep({...resep, cerita: e.target.value})}
+                        value={cerita}
+                        onChange={(e) => setCerita(e.target.value)}
                     />
-                    </Form.Group>
+                </Form.Group>
 
-                    <Form.Group>
+                <Form.Group>
                     <Form.Label>Lama memasak</Form.Label>
                     <Form.Control
                         type="text"
                         placeholder="lama masak"
-                        value={resep.waktu}
-                        onChange={(e) => setResep({...resep, waktu: e.target.value})}
+                        value={waktu}
+                        onChange={(e) => setWaktu(e.target.value)}
                     />
                 </Form.Group>
 
                 <Form.Group className="buatresep-bahan-wrapper">
                     <Form.Label>Bahan-bahan</Form.Label>
-                    {resep.bahan.map((bahan, index) => (
+                    {bahan.map((bahan, index) => (
                         <InputGroup className="mb-3" key={index}>
                         <p>{index+1}.</p>
                         <FormControl
@@ -227,7 +236,7 @@ const BuatResep = () => {
 
                 <Form.Group className="buatresep-langkah-wrapper">
                     <Form.Label>Langkah-langkah</Form.Label>
-                    {resep.langkah.map((langkah, index) => (
+                    {langkah.map((langkah, index) => (
                         <InputGroup className="mb-3" key={index}>
                         <p>{index+1}.</p>
                         <FormControl
@@ -262,8 +271,8 @@ const BuatResep = () => {
                         </InputGroup.Prepend>
                         <FormControl 
                         aria-label="Amount (to the nearest dollar)"
-                        value={resep.biaya}
-                        onChange={(e) => setResep({...resep, biaya: e.target.value})} 
+                        value={biaya}
+                        onChange={(e) => setBiaya(e.target.value)} 
                         maxLength={2}
                         />
                         <InputGroup.Append>
@@ -284,11 +293,11 @@ const BuatResep = () => {
                 </InputGroup>
 
                 <div className='buatresep-form-photo'>
-                        {resep.urlPhoto === '' ? (
+                        {urlPhoto === '' ? (
                             <p onClick={() => uploadPhoto.current.click()}>unggah foto</p>
                         ) : (
                             <>
-                                <img src={resep.urlPhoto} alt='' />
+                                <img src={urlPhoto} alt='' />
                                 <p 
                                     className='ubah-foto'
                                     onClick={() => uploadPhoto.current.click()}
@@ -315,7 +324,7 @@ const BuatResep = () => {
             </Backdrop>
 
             {/* snackbar */}
-            <Snackbar open={openSnackbar} autoHideDuration={3000} onClose={handleClose}>
+            <Snackbar open={openSnackbar} autoHideDuration={1500} onClose={handleClose}>
                 <Alert onClose={handleClose} severity={messageType}>
                     {message}
                 </Alert>

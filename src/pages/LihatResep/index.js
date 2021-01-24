@@ -8,17 +8,16 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import Snackbar from "@material-ui/core/Snackbar";
 import MuiAlert from "@material-ui/lab/Alert";
 
-// <snackbar function>
+// snackbar
 function Alert(props) {
     return <MuiAlert elevation={6} variant="filled" {...props} />;
 }
-// </snackbar function>
 
 const LihatResep = () => {
     const params = useParams();
     const history = useHistory();
     const myData = JSON.parse(localStorage.getItem("user"));
-    const userLoginStatus = localStorage.getItem("userLoginStatus")
+    const userLoginStatus = localStorage.getItem("userLoginStatus");
     const [modal, setModal] = useState(false);
     const [resepUid, setResepUid] = useState("");
     const [resep, setResep] = useState();
@@ -30,7 +29,7 @@ const LihatResep = () => {
     const [recookBy, setRecookBy] = useState([]);
 
 
-    // <snackbar function>
+    // snackbar
     const [open, setOpen] = useState(false);
     const [message, setMessage] = useState("")
     const [messageType, setMessageType] = useState("")
@@ -41,11 +40,9 @@ const LihatResep = () => {
 
         setOpen(false);
         if (message === "Resep telah dihapus"){
-            // history.push(`/halamanutama/${myData.uid}`);
             history.goBack();
         }
     };
-    // </snackbar function>
 
 
     useEffect(() => {
@@ -64,25 +61,26 @@ const LihatResep = () => {
         .then((res) => {
             if (res.val()) {
             const data = res.val();
-            console.log(data);
             setResep(data);
             setResepUid(data.chef.uid);
 
             // get info recook from
-            Firebase.database()
-                .ref(`posts/${data.recookFrom}/`)
-                .once("value")
-                .then((res) => {
-                if (res.val()) {
-                    setRecookFrom(res.val());
-                }
-                });
+            if(data.recookFrom){
+                Firebase.database()
+                    .ref(`posts/${data.recookFrom.postId}/`)
+                    .once("value")
+                    .then((res) => {
+                        if (res.val()) {
+                            setRecookFrom(res.val());
+                        }
+                    });
+            }
             }
         });
 
         // get info recook by
         Firebase.database()
-        .ref(`posts/${params.key}/recookBy`)
+        .ref(`posts/${params.key}/recookBy/`)
         .once("value")
         .then((res) => {
             if (res.val()) {
@@ -262,7 +260,7 @@ const LihatResep = () => {
                                 {index + 1}.
                             </p>
                             <p className="subtitle-underline-value">
-                                {bahan.namaBahan}
+                                {bahan.item}
                             </p>
                             <input type="checkbox" />
                         </div>
@@ -277,7 +275,7 @@ const LihatResep = () => {
                                 {index + 1}.
                             </p>
                             <p className="subtitle-underline-value">
-                                {langkah.namaLangkah}
+                                {langkah.item}
                             </p>
                             <input type="checkbox" />
                         </div>
@@ -329,7 +327,7 @@ const LihatResep = () => {
             <div className="lihatresep-commentContainer">
                 <div className="lihatresep-comment">
                     <div className="lihatresep-comment-judul">
-                        <i class='bx bx-comment-detail'></i>
+                        <i className='bx bx-comment-detail'></i>
                         <p className="subtitle judul">Komentar</p>
                     </div>
                     {/* when comments available */}
