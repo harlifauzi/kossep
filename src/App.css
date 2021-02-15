@@ -19,11 +19,17 @@ h1,h2,h3,h4,h5,h6,p{
 }
 
 /* App */
-.app-navbar{
+.app-container {
+  padding-top: 55px;
+}
+
+
+/* mynavbar */
+.mynavbar{
   background-image: linear-gradient(to bottom right, #fcb629, #FDC75B);
 }
 
-.app-navbar-wrapper{
+.mynavbar-wrapper{
   position: fixed;
   top: 0;
   left: 0;
@@ -31,25 +37,21 @@ h1,h2,h3,h4,h5,h6,p{
   z-index: 99;
 }
 
-.app-navbar *:focus{
+.mynavbar *:focus{
   outline: none;
 }
 
-.app-navbar h1{
+.mynavbar h1{
   margin: 0px;
 }
 
-.app-navbar-logoContainer:hover{
+.mynavbar-logoContainer:hover{
   cursor: pointer;
 }
 
-.app-navbar img{
+.mynavbar img{
   margin: 0px;
   height: 45px;
-}
-
-.app-container {
-  padding-top: 55px;
 }
 
 .ml-auto img{

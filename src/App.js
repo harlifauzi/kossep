@@ -1,23 +1,8 @@
 import React, { useEffect, useState } from "react";
 import "./App.css";
-import {
-    BuatAkun,
-    Masuk,
-    HalamanUtama,
-    BuatResep,
-    LihatResep,
-    HalamanAkun,
-    HalamanAkunLain,
-    HalamanEksplor,
-    PengaturanAkun,
-    Recook,
-    AboutUs,
-} from "./pages";
-import { Route, Switch, useHistory } from "react-router-dom";
-import { Firebase } from "./config";
-import { Nav, Navbar, Dropdown, DropdownButton } from "react-bootstrap";
-import "bootstrap/dist/css/bootstrap.min.css";
-import { ILLogo, ILNull } from "./assets/illustrations";
+import { useHistory } from "react-router-dom";
+import { Firebase, Routes } from "./config";
+import { MyNavbar } from "./components";
 
 const App = () => {
     const history = useHistory();
@@ -52,99 +37,24 @@ const App = () => {
         });
     }, []);
 
+
+    const signOut = () => {
+        Firebase.auth().signOut();
+        localStorage.removeItem("user");
+        setUserLoginStatus(false);
+        history.push("/");
+    }
+
+
     return (
         <div className="app-container">
-            {/* Navbar */}
             {readyToRender && (
             <>
-                <div className="app-navbar-wrapper">
-                    <Navbar
-                        className="app-navbar"
-                        collapseOnSelect
-                        expand="lg"
-                        variant="dark"
-                    >
-                        <div
-                            className="app-navbar-logoContainer"
-                            onClick={() => history.push(`/halamanutama/${userLoginData.uid}`)}
-                        >
-                            <img src={ILLogo} />
-                        </div>
+                <MyNavbar userLoginStatus={userLoginStatus} userLoginData={userLoginData} signOut={signOut}/>
 
-                        {/* when user login true */}
-                        {userLoginStatus && (
-                        <DropdownButton
-                            className="ml-auto"
-                            variant="light"
-                            menuAlign="right"
-                            title={userLoginData.photo ? <img src={userLoginData.photo} alt="" />  : <img src={ILNull} alt="" />}
-                            id="dropdown-menu-align-right"
-                        >
-                            <Dropdown.Item
-                                href="#"
-                                onClick={() => history.push(`/halamanakun/${userLoginData.uid}`)}
-                            >
-                                Akun saya
-                            </Dropdown.Item>
-                            <Dropdown.Divider />
-                            <Dropdown.Item
-                                href="#"
-                                onClick={() => {
-                                    Firebase.auth().signOut();
-                                    localStorage.removeItem("user");
-                                    setUserLoginStatus(false);
-                                    history.push("/");
-                                }}
-                            >
-                                Keluar
-                            </Dropdown.Item>
-                            <Dropdown.Item
-                                href="#"
-                                onClick={() => history.push("/aboutus")}
-                            >
-                                About us
-                            </Dropdown.Item>
-                        </DropdownButton>
-                        )}
-
-                        {/* when user login false */}
-                        {!userLoginStatus && (
-                        <>
-                            <Navbar.Toggle aria-controls="responsive-navbar-nav" />
-                            <Navbar.Collapse id="responsive-navbar-nav">
-                            <Nav className="ml-auto">
-                                <Nav.Link href="#" onClick={() => history.push("/buatakun")}>
-                                    Buat akun
-                                </Nav.Link>
-                                <Nav.Link href="#" onClick={() => history.push("/masuk")}>
-                                    Masuk
-                                </Nav.Link>
-                                <Nav.Link href="#" onClick={() => history.push("/aboutus")}>
-                                    About us
-                                </Nav.Link>
-                            </Nav>
-                            </Navbar.Collapse>
-                        </>
-                        )}
-                    </Navbar>
-                </div>
-            {/* /Navbar */}
-
-                <Switch>
-                    <Route exact path="/halamanutama/:key" component={HalamanUtama} />
-                    <Route path="/buatakun" component={BuatAkun} />
-                    <Route path="/masuk" component={Masuk} />
-                    <Route path="/buatresep" component={BuatResep} />
-                    <Route path="/lihatresep/:key" component={LihatResep} />
-                    <Route path="/halamanakun/:key" component={HalamanAkun} />
-                    <Route path="/halamanakunlain/:key" component={HalamanAkunLain} />
-                    <Route path="/halamaneksplor/:key" component={HalamanEksplor} />
-                    <Route path="/pengaturanakun/:key" component={PengaturanAkun} />
-                    <Route path="/recook/:key" component={Recook} />
-                    <Route path="/aboutus" component={AboutUs} />
-                </Switch>
+                <Routes />
             </>
-        )}
+            )}
         </div>
     );
 };
