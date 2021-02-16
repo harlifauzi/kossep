@@ -3,6 +3,7 @@ import { useHistory, useParams } from 'react-router-dom'
 import { Firebase } from '../../config';
 import { Button } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
+import { RecipeCard } from '../../components';
 
 const HalamanAkun = () => {
     const params = useParams();
@@ -53,11 +54,7 @@ const HalamanAkun = () => {
 
         items.forEach((item) => {
             const oldData = item.val();
-            const newData = {
-                id: oldData.postId,
-                data: oldData
-            }
-            data.unshift(newData);
+            data.unshift(oldData);
         });
 
         console.log({dataPosts: data})
@@ -127,28 +124,7 @@ const HalamanAkun = () => {
 
                 {/* mapping posts */}
                 {posts.map(recipe => (
-                <div className="halamanakun-grid-item" key={recipe.id}>
-                    {/* post card */}
-                    <div className="halamanakun-grid-item-card">
-                        <img onClick={() => lihatResep(recipe.id)} src={recipe.data.urlPhoto} />
-                        <div className="halamanakun-grid-item-card-desc">
-                            <h2 className="halamanakun-grid-item-card-desc-judul" onClick={() => lihatResep(recipe.id)}>{recipe.data.judul}</h2>
-                            <p className="halamanakun-grid-item-card-desc-cerita">{recipe.data.cerita}</p>
-                            <div className="halamanakun-grid-item-card-desc-info">
-                                <div>
-                                    <i className='bx bxs-time' ></i>
-                                    <p>{recipe.data.waktu}</p>
-                                </div>
-                                {recipe.data.biaya && (
-                                <div>
-                                    <i className='bx bxs-dollar-circle'></i>
-                                    <p>Rp. {recipe.data.biaya}K</p>
-                                </div>
-                                )}
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                <RecipeCard recipe={recipe} lihatResep={lihatResep} type="profile" />
                 ))}
 
             </div>

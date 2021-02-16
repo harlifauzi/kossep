@@ -2,7 +2,7 @@ import React from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { ILNull } from "../../../assets";
 
-const RecipeCard = ({recipe, lihatAkun, lihatResep}) => {
+const RecipeCard = ({recipe, lihatAkun, lihatResep, type}) => {
     return (
         <div className="halamanutama-grid-item" key={recipe.postId}>
             <div className="halamanutama-grid-item-card">
@@ -28,6 +28,7 @@ const RecipeCard = ({recipe, lihatAkun, lihatResep}) => {
                             <p>Rp. {recipe.biaya}K/porsi</p>
                         </div>
                         )}
+                        {type !== 'profile' && (
                         <div
                             className="halamanutama-grid-item-card-desc-info-chef"
                             onClick={() => lihatAkun(recipe.chef.uid)}
@@ -39,6 +40,7 @@ const RecipeCard = ({recipe, lihatAkun, lihatResep}) => {
                             )}
                             <p>{recipe.chef.namaLengkap}</p>
                         </div>
+                        )}
                     </div>
                 </div>
             </div>
