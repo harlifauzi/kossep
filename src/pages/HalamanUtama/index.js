@@ -2,14 +2,15 @@ import React, { useEffect, useState } from "react";
 import { useHistory, useParams } from "react-router-dom";
 import { Firebase } from "../../config";
 import "bootstrap/dist/css/bootstrap.min.css";
-import { ILBanner, ILNull } from "../../assets/illustrations";
+import { ILBanner } from "../../assets/illustrations";
+import { RecipeCard } from '../../components';
 
 const HalamanUtama = () => {
     const history = useHistory();
     const params = useParams();
     const userLoginStatus = localStorage.getItem("userLoginStatus");
     const [recipes, setRecipes] = useState([]);
-    const [siap, setSiap] = useState(false)                             // actually I dont know what this state, but if without this, error will come
+    const [siap, setSiap] = useState(false)                    
 
 
     useEffect(() => {
@@ -18,6 +19,7 @@ const HalamanUtama = () => {
         if (userLoginStatus === "false"){
             history.push("/halamaneksplor/undifined")
         }
+        
         Firebase.database()
             .ref(`users/${params.key}/following/`)
             .once("value", getFollowingUid)
@@ -98,39 +100,7 @@ const HalamanUtama = () => {
 
                 {/* mapping recipes */}
                 {recipes.map(recipe => (
-                // recipes card
-                <div className="halamanutama-grid-item" key={recipe.postId}>
-                    <div className="halamanutama-grid-item-card">
-                        <img onClick={() => lihatResep(recipe.postId)} src={recipe.urlPhoto} />
-                        <div className="halamanutama-grid-item-card-desc">
-                            <h2 className="halamanutama-grid-item-card-desc-judul" onClick={() => lihatResep(recipe.postId)}>{recipe.judul}</h2>
-                            <p className="halamanutama-grid-item-card-desc-cerita">{recipe.cerita}</p>
-                            <div className="halamanutama-grid-item-card-desc-info">
-                                <div>
-                                    <i className='bx bxs-time' ></i>
-                                    <p>{recipe.waktu}</p>
-                                </div>
-                                {recipe.biaya && (
-                                <div>
-                                    <i className='bx bxs-dollar-circle'></i>
-                                    <p>Rp. {recipe.biaya}K/porsi</p>
-                                </div>
-                                )}
-                                <div 
-                                    className="halamanutama-grid-item-card-desc-info-chef" 
-                                    onClick={() => lihatAkun(recipe.chef.uid)}
-                                >
-                                    {recipe.chef.photo ? (
-                                        <img src={recipe.chef.photo} alt=""/>
-                                    ) : (
-                                        <img src={ILNull} alt=""/>
-                                    )}
-                                    <p>{recipe.chef.namaLengkap}</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                <RecipeCard recipe={recipe} lihatResep={lihatResep} lihatAkun={lihatAkun} />
                 ))}
 
             </div>
