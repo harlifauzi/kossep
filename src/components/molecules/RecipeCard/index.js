@@ -1,7 +1,6 @@
 import React from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { ILNull } from "../../../assets";
-import { useHistory } from "react-router-dom";
 
 const RecipeCard = ({recipe, lihatAkun, lihatResep}) => {
     return (

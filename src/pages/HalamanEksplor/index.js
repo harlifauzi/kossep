@@ -1,12 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { useHistory, useParams } from "react-router-dom";
 import { Firebase } from "../../config";
-import { Button, InputGroup, FormControl } from "react-bootstrap";
-import { ILNull } from "../../assets/illustrations";
-import "bootstrap/dist/css/bootstrap.min.css";
+import { RecipeCard, SearchBar } from '../../components';
 
 const HalamanEksplor = () => {
-    const params = useParams();
     const history = useHistory();
     const userLoginStatus = localStorage.getItem("userLoginStatus");
     const [recipes, setRecipes] = useState([]);
@@ -85,21 +82,14 @@ const HalamanEksplor = () => {
     }
 
 
+    const onChangeCariResep = (e) => {
+        setSearch(e.target.value);
+    }
+
+
     return (
         <div className="halamaneksplor-container">
-            <InputGroup className="mb-3">
-                <FormControl
-                    placeholder="tuliskan judul resep"
-                    aria-label="Recipient's username"
-                    aria-describedby="basic-addon2"
-                    className="halamaneksplor-searchbar"
-                    value={search}
-                    onChange={(e) => setSearch(e.target.value)}
-                />
-                <InputGroup.Append>
-                    <Button variant="danger" onClick={onCariResep}>cari resep</Button>
-                </InputGroup.Append>
-            </InputGroup>
+            <SearchBar onChangeCariResep={onChangeCariResep} onCariResep={onCariResep} value={search} />
 
             {/* when recipes available */}
             {recipes && (
@@ -107,37 +97,7 @@ const HalamanEksplor = () => {
 
                 {/* mapping recipes */}
                 {recipes.map(recipe => (
-                <div className="halamaneksplor-grid-item" key={recipe.postId}>
-                    {/* recipe card */}
-                    <div className="halamaneksplor-grid-item-card">
-                        <img onClick={() => lihatResep(recipe.postId)} src={recipe.urlPhoto} />
-                        <div className="halamaneksplor-grid-item-card-desc">
-                            <h2 className="halamaneksplor-grid-item-card-desc-judul" onClick={() => lihatResep(recipe.postId)}>{recipe.judul}</h2>
-                            <p className="halamaneksplor-grid-item-card-desc-cerita">{recipe.cerita}</p>
-                            <div className="halamaneksplor-grid-item-card-desc-info">
-                                <div>
-                                    <i className='bx bxs-time' ></i>
-                                    <p>{recipe.waktu}</p>
-                                </div>
-                                <div>
-                                    <i className='bx bxs-dollar-circle'></i>
-                                    <p>Rp. {recipe.biaya}K/porsi</p>
-                                </div>
-                                <div 
-                                    className="halamaneksplor-grid-item-card-desc-info-chef" 
-                                    onClick={() => lihatAkun(recipe.chef.uid)}
-                                >
-                                    {recipe.chef.photo ? (
-                                        <img src={recipe.chef.photo} alt=""/>
-                                    ) : (
-                                        <img src={ILNull} alt=""/>
-                                    )}
-                                    <p>{recipe.chef.namaLengkap}</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                <RecipeCard recipe={recipe} lihatAkun={lihatAkun} lihatResep={lihatResep} />
                 ))}
 
             </div>
