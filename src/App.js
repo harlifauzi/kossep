@@ -11,7 +11,11 @@ const App = () => {
     const [readyToRender, setReadyToRender] = useState();
 
     useEffect(() => {
-        // check login user
+        checkUser();
+    }, []);
+
+
+    const checkUser = () => {
         Firebase.auth().onAuthStateChanged(user => {
             if (user) {
                 Firebase.database()
@@ -35,7 +39,7 @@ const App = () => {
                 history.push("/halamaneksplor/undifined");
             }
         });
-    }, []);
+    }
 
 
     const signOut = () => {

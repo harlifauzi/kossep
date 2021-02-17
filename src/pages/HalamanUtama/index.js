@@ -10,7 +10,7 @@ const HalamanUtama = () => {
     const params = useParams();
     const userLoginStatus = localStorage.getItem("userLoginStatus");
     const [recipes, setRecipes] = useState([]);
-    const [siap, setSiap] = useState(false)                    
+    const [magic, setMagic] = useState(false)                    
 
 
     useEffect(() => {
@@ -19,38 +19,37 @@ const HalamanUtama = () => {
         if (userLoginStatus === "false"){
             history.push("/halamaneksplor/undifined")
         }
-        
-        Firebase.database()
-            .ref(`users/${params.key}/following/`)
-            .once("value", getFollowingUid)
+
+        getRecipes();
     }, []);
 
 
-    // get following uid for get recipes
-    const getFollowingUid = (items) => {    
-        items.forEach(item => {
-            Firebase.database()
-                .ref("posts/")
-                .orderByChild("chef/uid")
-                .equalTo(item.val().uid)
-                .once("value")
-                .then(res => {
-                    const items = res;
-                    
-                    items.forEach(item => {
-                        const recipe = item.val()
-                        Firebase.database()
-                            .ref(`users/${recipe.chef.uid}`)
-                            .once("value")
-                            .then(res => {
-                                setSiap(false)
-                                const chef = res.val();
-                                recipe.chef = chef;
-                                recipes.push(recipe)
-                                setSiap(true)
-                            })
-                    })
-                })
+    // get recipes from following
+    const getRecipes = async () => {
+        const followings = await Firebase.database().ref(`users/${params.key}/following/`).once('value')
+            .then(res => res.val())
+            .then(datas => { return datas });
+            
+        Object.keys(followings).map( async following => {
+            const dataChef = await Firebase.database().ref(`users/${following}/`).once('value')
+                .then(res => res.val())
+                .then(user => {
+                    return user;
+                });
+                
+            const dataRecipes = await Firebase.database().ref(`posts/`).orderByChild('chef/uid').equalTo(following).once('value')
+                .then(res => res.val())
+                .then(recipes => {
+                    return recipes;
+                });
+                
+            Object.keys(dataRecipes).map(recipe => {
+                let newRecipe = dataRecipes[recipe];
+                newRecipe.chef = dataChef;
+                setMagic(false);
+                recipes.push(newRecipe);
+                setMagic(true);
+            });
         })
     }
 
