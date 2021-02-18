@@ -1,13 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
 import { Firebase } from "../../config";
-import { RecipeCard, SearchBar } from '../../components';
+import { RecipeCard, RecipeCardSkeleton, SearchBar } from '../../components';
 
 const HalamanEksplor = () => {
     const history = useHistory();
     const userLoginStatus = localStorage.getItem("userLoginStatus");
     const [recipes, setRecipes] = useState([]);
     const [search, setSearch] = useState("");
+    const [skeleton, setSkeleton] = useState(false);
 
 
     useEffect(() => {
@@ -41,6 +42,7 @@ const HalamanEksplor = () => {
 
         const sortRecipes = newRecipes.sort((a, b) => b['timestamp'] - a['timestamp']);
 
+        setSkeleton(true);
         setRecipes(sortRecipes);
     }
 
@@ -116,6 +118,15 @@ const HalamanEksplor = () => {
                 <RecipeCard key={recipe.postId} recipe={recipe} lihatAkun={lihatAkun} lihatResep={lihatResep} />
                 ))}
 
+            </div>
+            )}
+
+            {/* when recipes are not available */}
+            {!skeleton && (
+            <div className="halamaneksplor-grid">
+                <RecipeCardSkeleton />
+                <RecipeCardSkeleton />
+                <RecipeCardSkeleton />
             </div>
             )}
             

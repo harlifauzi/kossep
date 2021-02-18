@@ -3,13 +3,14 @@ import { useHistory, useParams } from "react-router-dom";
 import { Firebase } from "../../config";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { ILBanner } from "../../assets/illustrations";
-import { RecipeCard } from '../../components';
+import { RecipeCard, RecipeCardSkeleton } from '../../components';
 
 const HalamanUtama = () => {
     const history = useHistory();
     const params = useParams();
     const userLoginStatus = localStorage.getItem("userLoginStatus");
     const [recipes, setRecipes] = useState([]); 
+    const [skeleton, setSkeleton] = useState(false);
 
 
     useEffect(() => {
@@ -18,7 +19,7 @@ const HalamanUtama = () => {
         if (userLoginStatus === "false"){
             history.push("/halamaneksplor/undifined")
         }
-
+        
         getRecipes();
     }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
@@ -27,7 +28,7 @@ const HalamanUtama = () => {
     const getRecipes = async () => {
         const followings = await Firebase.database().ref(`users/${params.key}/following/`).once('value')
             .then(res => res.val())
-            .then(datas => { return datas })
+            .then(datas => {return datas})
             .catch(error => {return error});
     
         if(followings){
@@ -59,6 +60,7 @@ const HalamanUtama = () => {
     
             const sortRecipes = arrRecipe.sort((a, b) => b['timestamp'] - a['timestamp']);
     
+            setSkeleton(true);
             setRecipes(sortRecipes);
         } else return;
     }
@@ -112,6 +114,15 @@ const HalamanUtama = () => {
                 <RecipeCard key={recipe.postId} recipe={recipe} lihatResep={lihatResep} lihatAkun={lihatAkun} />
                 ))}
 
+            </div>
+            )}
+
+            {/* if recipes are not available */}
+            {!skeleton && (
+            <div className="halamanutama-grid">
+                <RecipeCardSkeleton />
+                <RecipeCardSkeleton />
+                <RecipeCardSkeleton />
             </div>
             )}
 

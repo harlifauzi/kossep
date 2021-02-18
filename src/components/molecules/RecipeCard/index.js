@@ -4,20 +4,20 @@ import { ILNull } from "../../../assets";
 
 const RecipeCard = ({recipe, lihatAkun, lihatResep, type}) => {
     return (
-        <div className="halamanutama-grid-item" key={recipe.postId}>
-            <div className="halamanutama-grid-item-card">
+        <div className="recipecard" key={recipe.postId}>
+            <div className="recipecard-card">
                 <img onClick={() => lihatResep(recipe.postId)} src={recipe.urlPhoto} alt=''/>
-                <div className="halamanutama-grid-item-card-desc">
+                <div className="recipecard-card-desc">
                     <h2
-                        className="halamanutama-grid-item-card-desc-judul"
+                        className="recipecard-card-desc-judul"
                         onClick={() => lihatResep(recipe.postId)}
                     >
                         {recipe.judul}
                     </h2>
-                    <p className="halamanutama-grid-item-card-desc-cerita">
+                    <p className="recipecard-card-desc-cerita">
                         {recipe.cerita}
                     </p>
-                    <div className="halamanutama-grid-item-card-desc-info">
+                    <div className="recipecard-card-desc-info">
                         <div>
                             <i className="bx bxs-time"></i>
                             <p>{recipe.waktu}</p>
@@ -30,7 +30,7 @@ const RecipeCard = ({recipe, lihatAkun, lihatResep, type}) => {
                         )}
                         {type !== 'profile' && (
                         <div
-                            className="halamanutama-grid-item-card-desc-info-chef"
+                            className="recipecard-card-desc-info-chef"
                             onClick={() => lihatAkun(recipe.chef.uid)}
                         >
                             {recipe.chef.photo ? (
