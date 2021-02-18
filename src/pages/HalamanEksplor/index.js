@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useHistory, useParams } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import { Firebase } from "../../config";
 import { RecipeCard, SearchBar } from '../../components';
 
@@ -10,37 +10,82 @@ const HalamanEksplor = () => {
     const [search, setSearch] = useState("");
 
 
-    useEffect( async () => {
+    useEffect(() => {
         document.title = "Kossep | Explore"
-
-        // get all posts data
-        const getRecipes = await Firebase.database()
-            .ref("posts/")
-            .orderByChild("timestamp")
-            .once("value", orderAllPostsData);
         
+        getRecipes();
+
+        return () => getRecipes();
     }, []);
 
 
-    // order all posts data and save to posts state
-    const orderAllPostsData = (items) => {
-        const recipes = items;
-        const data = [];
-        recipes.forEach(item => {
-            const resep = item.val();
-            data.unshift(resep);
+    // get recipes
+    const getRecipes = async () => {
+        const recipes = await Firebase.database().ref('posts/').once('value')
+            .then(res => res.val())
+            .then(recipes => {return recipes});
+
+        const oldRecipes = await Object.keys(recipes).map( async recipe => {
+            const newRecipe = recipes[recipe];
+
+            const chef = await Firebase.database().ref(`users/${newRecipe.chef.uid}/`).once('value')
+                .then(res => res.val())
+                .then(chef => {return chef});
+
+            newRecipe.chef = chef;
+
+            return newRecipe;
         })
-        setRecipes(data);
-    };
+
+        const newRecipes = await Promise.all(oldRecipes);
+
+        const sortRecipes = newRecipes.sort((a, b) => b['timestamp'] - a['timestamp']);
+
+        setRecipes(sortRecipes);
+    }
 
 
-    // view recipes when card is clicked
+    // search recipe
+    const onCariResep = async () => {
+        const results = await Firebase.database().ref('posts/').orderByChild('judul').startAt(`${search}`).endAt(`${search}/uf8ff`).once('value')
+            .then(res => res.val())
+            .then(results => {return results});
+
+        if(results){
+            const oldResult = await Object.keys(results).map( async result => {
+                const recipe = results[result];
+    
+                const chef = await Firebase.database().ref(`users/${recipe.chef.uid}/`).once('value')
+                    .then(res => res.val())
+                    .then(chef => {return chef});
+    
+                recipe.chef = chef;
+    
+                return(recipe);
+            })
+    
+            const newRecipe = await Promise.all(oldResult);
+    
+            setRecipes(newRecipe);
+        } else {
+            alert('Resep tidak ditemukan!');
+        }
+    }
+
+
+    // change text search input
+    const onChangeCariResep = (e) => {
+        setSearch(e.target.value);
+    }
+
+
+    // view recipes
     const lihatResep = (key) => {
         history.push(`/lihatresep/${key}`);
     }
   
 
-    // function view profile
+    // view profile
     const lihatAkun = (key) => {
         const getDataAkun = localStorage.getItem("user");
         const dataAkun = JSON.parse(getDataAkun)
@@ -58,35 +103,6 @@ const HalamanEksplor = () => {
     }
 
 
-    // function when search recipe clicked
-    const onCariResep = () => {
-        console.log(search);
-        Firebase.database()
-        .ref("posts/")
-        .orderByChild("judul")
-        .startAt(`${search}`)
-        .endAt(`${search}/uf8ff`)
-        .once("value")
-        .then(res => {
-            if (res.val()){
-                const oldData = res.val();
-                const data = [];
-                Object.keys(oldData).map(item => {
-                    data.push(oldData[item]);
-                })
-                setRecipes(data);
-            } else {
-                alert("Resep tidak ditemukan");
-            }
-        });
-    }
-
-
-    const onChangeCariResep = (e) => {
-        setSearch(e.target.value);
-    }
-
-
     return (
         <div className="halamaneksplor-container">
             <SearchBar onChangeCariResep={onChangeCariResep} onCariResep={onCariResep} value={search} />
@@ -97,7 +113,7 @@ const HalamanEksplor = () => {
 
                 {/* mapping recipes */}
                 {recipes.map(recipe => (
-                <RecipeCard recipe={recipe} lihatAkun={lihatAkun} lihatResep={lihatResep} />
+                <RecipeCard key={recipe.postId} recipe={recipe} lihatAkun={lihatAkun} lihatResep={lihatResep} />
                 ))}
 
             </div>

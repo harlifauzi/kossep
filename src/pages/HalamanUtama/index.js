@@ -9,8 +9,7 @@ const HalamanUtama = () => {
     const history = useHistory();
     const params = useParams();
     const userLoginStatus = localStorage.getItem("userLoginStatus");
-    const [recipes, setRecipes] = useState([]);
-    const [magic, setMagic] = useState(false)                    
+    const [recipes, setRecipes] = useState([]); 
 
 
     useEffect(() => {
@@ -21,36 +20,47 @@ const HalamanUtama = () => {
         }
 
         getRecipes();
-    }, []);
+    }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
 
     // get recipes from following
     const getRecipes = async () => {
         const followings = await Firebase.database().ref(`users/${params.key}/following/`).once('value')
             .then(res => res.val())
-            .then(datas => { return datas });
-            
-        Object.keys(followings).map( async following => {
-            const dataChef = await Firebase.database().ref(`users/${following}/`).once('value')
-                .then(res => res.val())
-                .then(user => {
-                    return user;
+            .then(datas => { return datas })
+            .catch(error => {return error});
+    
+        if(followings){
+            const oldRecipes = await Object.keys(followings).map( async following => {
+                const dataChef = await Firebase.database().ref(`users/${following}/`).once('value')
+                    .then(res => res.val())
+                    .then(user => {return user});
+                    
+                const dataRecipes = await Firebase.database().ref(`posts/`).orderByChild('chef/uid').equalTo(following).once('value')
+                    .then(res => res.val())
+                    .then(recipes => {return recipes});
+                    
+                const newDataRecipes = await Object.keys(dataRecipes).map(recipe => {
+                    let newRecipe = dataRecipes[recipe];
+                    newRecipe.chef = dataChef;
+                    return newRecipe;
                 });
-                
-            const dataRecipes = await Firebase.database().ref(`posts/`).orderByChild('chef/uid').equalTo(following).once('value')
-                .then(res => res.val())
-                .then(recipes => {
-                    return recipes;
-                });
-                
-            Object.keys(dataRecipes).map(recipe => {
-                let newRecipe = dataRecipes[recipe];
-                newRecipe.chef = dataChef;
-                setMagic(false);
-                recipes.push(newRecipe);
-                setMagic(true);
+    
+                return newDataRecipes;
+            })
+    
+            const newRecipes = await Promise.all(oldRecipes);
+    
+            let arrRecipe = [];
+            Object.keys(newRecipes).map(recipe => {
+                newRecipes[recipe].map(recipe => arrRecipe.push(recipe));
+                return recipe;
             });
-        })
+    
+            const sortRecipes = arrRecipe.sort((a, b) => b['timestamp'] - a['timestamp']);
+    
+            setRecipes(sortRecipes);
+        } else return;
     }
 
 
@@ -77,7 +87,7 @@ const HalamanUtama = () => {
 
             {/* banner */}
             <div className="halamanutama-banner">
-                <img src={ILBanner} />
+                <img src={ILBanner} alt=""/>
             </div>
             
             {/* buttons */}
@@ -99,7 +109,7 @@ const HalamanUtama = () => {
 
                 {/* mapping recipes */}
                 {recipes.map(recipe => (
-                <RecipeCard recipe={recipe} lihatResep={lihatResep} lihatAkun={lihatAkun} />
+                <RecipeCard key={recipe.postId} recipe={recipe} lihatResep={lihatResep} lihatAkun={lihatAkun} />
                 ))}
 
             </div>

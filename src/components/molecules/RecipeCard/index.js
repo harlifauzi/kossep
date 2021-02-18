@@ -6,7 +6,7 @@ const RecipeCard = ({recipe, lihatAkun, lihatResep, type}) => {
     return (
         <div className="halamanutama-grid-item" key={recipe.postId}>
             <div className="halamanutama-grid-item-card">
-                <img onClick={() => lihatResep(recipe.postId)} src={recipe.urlPhoto} />
+                <img onClick={() => lihatResep(recipe.postId)} src={recipe.urlPhoto} alt=''/>
                 <div className="halamanutama-grid-item-card-desc">
                     <h2
                         className="halamanutama-grid-item-card-desc-judul"
