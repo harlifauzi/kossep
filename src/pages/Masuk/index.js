@@ -60,6 +60,7 @@ const Masuk = () => {
                 setMessageType("success");
                 setMessage("Yeay, kamu berhasil masuk!");
                 setOpen(true);
+                history.replace('/');
             })
             .catch(err => {
                 if (err.code === "auth/user-not-found") {

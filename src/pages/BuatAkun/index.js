@@ -15,6 +15,7 @@ const BuatAkun = () => {
     const [namaLengkap, setNamaLengap] = useState("");
     const [alamatEmail, setAlamatEmail] = useState("");
     const [kataSandi, setKataSandi] = useState("");
+    const { loginStatus } = useSelector(state => state);
     const history = useHistory();
 
     // <snackbar function>
@@ -34,6 +35,8 @@ const BuatAkun = () => {
 
 
     useEffect(() => {
+        if ( loginStatus ) history.replace('/');
+
         document.title="Kossep | Buat akun";
     }, [])
 
@@ -71,7 +74,7 @@ const BuatAkun = () => {
                     setMessageType("success");
                     setMessage("Yeay, akun kamu berhasil dibuat!");
                     setOpen(true);
-                    history.push("/");
+                    history.replace("/");
             })
             .catch((err) => {
                 if( err.code === "auth/invalid-email" ){
