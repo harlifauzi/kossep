@@ -10,6 +10,7 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import { makeStyles } from '@material-ui/core/styles';
 import Snackbar from '@material-ui/core/Snackbar';
 import MuiAlert from '@material-ui/lab/Alert';
+import { useSelector } from "react-redux";
 
 
 // snackbar
@@ -58,6 +59,7 @@ const BuatResep = () => {
     const [langkah, setLangkah] = useState([{item: ''}]);
     const [biaya, setBiaya] = useState('');
     const [urlPhoto, setUrlPhoto] = useState('');
+    const { dataUser } = useSelector(state => state);
 
     const [photo, setPhoto] = useState("");
     const resep = {
@@ -69,7 +71,7 @@ const BuatResep = () => {
         langkah,
         biaya,
         urlPhoto,
-        chef: JSON.parse(localStorage.getItem("user")),
+        chef: dataUser,
         waktuPost: '',
         timestamp: ''
     };
