@@ -20,10 +20,6 @@ const App = () => {
                 const responseDataUser = await Firebase.database().ref(`users/${user.uid}`).once('value').then(res => res.val());
                 dispatch({type: 'UPDATE_DATA_USER', payload: responseDataUser});
                 dispatch({type: 'UPDATE_LOGIN_STATUS', payload: true});
-                localStorage.setItem("user", JSON.stringify(responseDataUser));
-                localStorage.setItem("userLoginStatus", JSON.stringify(true));
-            } else {
-                localStorage.setItem("userLoginStatus", JSON.stringify(false));
             }
         })
     }
