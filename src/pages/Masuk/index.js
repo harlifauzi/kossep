@@ -4,6 +4,7 @@ import { useHistory } from "react-router-dom";
 import { ILSignIn } from '../../assets/illustrations';
 import Snackbar from '@material-ui/core/Snackbar';
 import MuiAlert from '@material-ui/lab/Alert';
+import { useSelector } from "react-redux";
 
 // <snackbar function>
 function Alert(props) {
@@ -15,6 +16,7 @@ const Masuk = () => {
     const history = useHistory();
     const [alamatEmail, setAlamatEmail] = useState("");
     const [kataSandi, setKataSandi] = useState("");
+    const { loginStatus } = useSelector(state => state);
 
     // <snackbar function>
     const [open, setOpen] = React.useState(false);
@@ -34,6 +36,10 @@ const Masuk = () => {
 
 
     useEffect(() => {
+        if ( loginStatus ) {
+            history.replace('/');
+        }
+
         document.title = "Kossep | Masuk"
     })
 
