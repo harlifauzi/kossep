@@ -2,10 +2,22 @@ import React from "react";
 import { useHistory } from "react-router-dom";
 import { ILLogo, ILNull } from "../../../assets";
 import { Nav, Navbar, Dropdown, DropdownButton } from "react-bootstrap";
-import "bootstrap/dist/css/bootstrap.min.css";
+import { useDispatch, useSelector } from "react-redux";
+import { Firebase } from "../../../config";
 
-const MyNavbar = ({ userLoginData, userLoginStatus, signOut }) => {
+const MyNavbar = () => {
     const history = useHistory();
+    const dispatch = useDispatch();
+    const { loginStatus, dataUser } = useSelector(state => state);
+    
+
+    const signOut = () => {
+        Firebase.auth().signOut();
+        localStorage.removeItem("user");
+        dispatch({type: 'UPDATE_LOGIN_STATUS', payload: false});
+        dispatch({type: 'UPDATE_DATA_USER', payload: null});
+        history.push("/");
+    }
 
 
     return (
@@ -15,22 +27,21 @@ const MyNavbar = ({ userLoginData, userLoginStatus, signOut }) => {
                     <img src={ILLogo} />
                 </div>
 
-                {/* when user login true */}
-                {userLoginStatus && (
+                {loginStatus && (
                 <DropdownButton
                     className="ml-auto"
                     variant="light"
                     menuAlign="right"
                     title={
-                        userLoginData.photo ? (
-                            <img src={userLoginData.photo} alt="" />
+                        dataUser.photo ? (
+                            <img src={dataUser.photo} alt="" />
                         ) : (
                             <img src={ILNull} alt="" />
                         )
                     }
                     id="dropdown-menu-align-right"
                 >
-                    <Dropdown.Item href="#" onClick={() => history.push(`/halamanakun/${userLoginData.uid}`)}>
+                    <Dropdown.Item href="#" onClick={() => history.push(`/halamanakun/${dataUser.uid}`)}>
                         Akun saya
                     </Dropdown.Item>
                     <Dropdown.Divider />
@@ -43,8 +54,7 @@ const MyNavbar = ({ userLoginData, userLoginStatus, signOut }) => {
                 </DropdownButton>
                 )}
 
-                {/* when user login false */}
-                {!userLoginStatus && (
+                {!loginStatus && (
                 <>
                     <Navbar.Toggle aria-controls="responsive-navbar-nav" />
                     <Navbar.Collapse id="responsive-navbar-nav">

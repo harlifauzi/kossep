@@ -15,7 +15,6 @@ const Masuk = () => {
     const history = useHistory();
     const [alamatEmail, setAlamatEmail] = useState("");
     const [kataSandi, setKataSandi] = useState("");
-    const [userData, setUserData] = useState("")
 
     // <snackbar function>
     const [open, setOpen] = React.useState(false);
@@ -50,10 +49,8 @@ const Masuk = () => {
             return setOpen(true);
         }
 
-        Firebase.auth()
-        .signInWithEmailAndPassword(alamatEmail, kataSandi)
+        Firebase.auth().signInWithEmailAndPassword(alamatEmail, kataSandi)
             .then(res => {
-                setUserData(res.user)
                 setMessageType("success");
                 setMessage("Yeay, kamu berhasil masuk!");
                 setOpen(true);
