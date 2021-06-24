@@ -4,9 +4,9 @@ import { Firebase } from "../../config";
 import { v4 as uuidv4 } from "uuid";
 import { Form, InputGroup, FormControl, Button, Modal } from "react-bootstrap";
 import { ILNull } from "../../assets"
-import "bootstrap/dist/css/bootstrap.min.css";
 import Snackbar from "@material-ui/core/Snackbar";
 import MuiAlert from "@material-ui/lab/Alert";
+import { useSelector } from "react-redux";
 
 // snackbar
 function Alert(props) {
@@ -16,8 +16,6 @@ function Alert(props) {
 const LihatResep = () => {
     const params = useParams();
     const history = useHistory();
-    const myData = JSON.parse(localStorage.getItem("user"));
-    const userLoginStatus = localStorage.getItem("userLoginStatus");
     const [modal, setModal] = useState(false);
     const [resepUid, setResepUid] = useState("");
     const [resep, setResep] = useState();
@@ -27,6 +25,7 @@ const LihatResep = () => {
     const [recookFrom, setRecookFrom] = useState("");
     const [recookParam, setRecookParam] = useState("");
     const [recookBy, setRecookBy] = useState([]);
+    const { loginStatus, dataUser } = useSelector(state => state);
 
 
     // snackbar
@@ -141,7 +140,7 @@ const LihatResep = () => {
 
     // function when button kirim clicked
     const onKirim = () => {
-        if ( userLoginStatus === "true"){
+        if ( loginStatus ){
             const today = new Date();
             const waktuKomen = today.getTime();
             const byUser = JSON.parse(localStorage.getItem("user"));
@@ -190,8 +189,8 @@ const LihatResep = () => {
 
     // function view profile
     const onLihatProfile = (uid) => {
-        if (userLoginStatus === "true"){
-            if (myData.uid !== uid) {
+        if ( loginStatus ){
+            if (dataUser.uid !== uid) {
                 history.push(`/halamanakunlain/${uid}`);
             } else {
                 history.push(`/halamanakun/${uid}`);
@@ -284,9 +283,9 @@ const LihatResep = () => {
 
                     {/* if login status = true (get from local storage) */}
                     <div className="lihatresep-recook-group">
-                    { userLoginStatus === "true" && (
+                    { loginStatus && (
                         <>
-                        {myData.uid !== resepUid && (
+                        {dataUser.uid !== resepUid && (
                             <Button
                             className="lihatresep-buttonRecook"
                             variant="warning"
@@ -307,9 +306,9 @@ const LihatResep = () => {
                     </div>
 
                     {/* if login status = true (get from local storage) */}
-                    { userLoginStatus === "true" && (
+                    { loginStatus && (
                         <>
-                            {myData.uid === resepUid && (
+                            {dataUser.uid === resepUid && (
                             <Button
                                 className="lihatresep-buttonRecook ml-auto mr-0 lihatresep-recook-group"
                                 variant="danger"

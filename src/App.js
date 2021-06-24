@@ -1,13 +1,13 @@
 import React, { useEffect } from "react";
 import "./App.css";
-import { useHistory } from "react-router-dom";
 import { Firebase, Routes } from "./config";
 import { MyNavbar } from "./components";
 import { useDispatch } from "react-redux";
 
+
 const App = () => {
-    const history = useHistory();
     const dispatch = useDispatch();
+
 
     useEffect(() => {
         checkUser();
@@ -22,10 +22,8 @@ const App = () => {
                 dispatch({type: 'UPDATE_LOGIN_STATUS', payload: true});
                 localStorage.setItem("user", JSON.stringify(responseDataUser));
                 localStorage.setItem("userLoginStatus", JSON.stringify(true));
-                history.replace('/');
             } else {
                 localStorage.setItem("userLoginStatus", JSON.stringify(false));
-                history.replace("/eksplor");
             }
         })
     }
@@ -38,5 +36,6 @@ const App = () => {
         </div>
     );
 };
+
 
 export default App;

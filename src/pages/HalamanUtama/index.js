@@ -14,12 +14,10 @@ const HalamanUtama = () => {
 
     useEffect(() => {
         if (!loginStatus) {
-            console.log('logged out');
             history.replace("/eksplor");
         }
 
         if (loginStatus) {
-            console.log('logged in');
             document.title = "Kossep";
             getRecipes();
         }
