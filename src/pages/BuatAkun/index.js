@@ -4,6 +4,7 @@ import { useHistory } from "react-router-dom";
 import { ILSignUp } from "../../assets/illustrations";
 import Snackbar from '@material-ui/core/Snackbar';
 import MuiAlert from '@material-ui/lab/Alert';
+import { useSelector } from "react-redux";
 
 // <snackbar function>
 function Alert(props) {
