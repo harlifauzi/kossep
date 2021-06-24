@@ -11,7 +11,7 @@ const MyNavbar = ({ userLoginData, userLoginStatus, signOut }) => {
     return (
         <div className="mynavbar-wrapper">
             <Navbar className="mynavbar" collapseOnSelect expand="lg" variant="dark">
-                <div className="mynavbar-logoContainer" onClick={() => history.push(`/halamanutama/${userLoginData.uid}`)}>
+                <div className="mynavbar-logoContainer" onClick={() => history.push('/')}>
                     <img src={ILLogo} />
                 </div>
 

@@ -2,36 +2,32 @@ import React, { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
 import { Firebase } from "../../config";
 import { RecipeCard, RecipeCardSkeleton, SearchBar } from '../../components';
+import { useSelector } from "react-redux";
 
 const HalamanEksplor = () => {
     const history = useHistory();
-    const userLoginStatus = localStorage.getItem("userLoginStatus");
     const [recipes, setRecipes] = useState([]);
     const [search, setSearch] = useState("");
     const [skeleton, setSkeleton] = useState(false);
+    const { loginStatus, dataUser } = useSelector(state => state);
 
 
     useEffect(() => {
         document.title = "Kossep | Explore"
         
         getRecipes();
-
-        return () => getRecipes();
     }, []);
 
 
-    // get recipes
     const getRecipes = async () => {
         const recipes = await Firebase.database().ref('posts/').once('value')
-            .then(res => res.val())
-            .then(recipes => {return recipes});
+            .then(res => res.val());
 
         const oldRecipes = await Object.keys(recipes).map( async recipe => {
             const newRecipe = recipes[recipe];
 
             const chef = await Firebase.database().ref(`users/${newRecipe.chef.uid}/`).once('value')
-                .then(res => res.val())
-                .then(chef => {return chef});
+                .then(res => res.val());
 
             newRecipe.chef = chef;
 
@@ -47,11 +43,9 @@ const HalamanEksplor = () => {
     }
 
 
-    // search recipe
     const onCariResep = async () => {
         const results = await Firebase.database().ref('posts/').orderByChild('judul').startAt(`${search}`).endAt(`${search}/uf8ff`).once('value')
-            .then(res => res.val())
-            .then(results => {return results});
+            .then(res => res.val());
 
         if(results){
             const oldResult = await Object.keys(results).map( async result => {
@@ -59,11 +53,10 @@ const HalamanEksplor = () => {
     
                 const chef = await Firebase.database().ref(`users/${recipe.chef.uid}/`).once('value')
                     .then(res => res.val())
-                    .then(chef => {return chef});
     
                 recipe.chef = chef;
     
-                return(recipe);
+                return recipe;
             })
     
             const newRecipe = await Promise.all(oldResult);
@@ -75,33 +68,25 @@ const HalamanEksplor = () => {
     }
 
 
-    // change text search input
     const onChangeCariResep = (e) => {
         setSearch(e.target.value);
     }
 
 
-    // view recipes
     const lihatResep = (key) => {
         history.push(`/lihatresep/${key}`);
     }
   
 
-    // view profile
     const lihatAkun = (key) => {
-        const getDataAkun = localStorage.getItem("user");
-        const dataAkun = JSON.parse(getDataAkun)
-
-        if (userLoginStatus === "true"){
-            if(dataAkun.uid===key){
+        if ( loginStatus ){
+            if ( dataUser.uid === key ) {
                 history.push(`/halamanakun/${key}`);
             } else {
                 history.push(`/halamanakunlain/${key}`);
             }
-        } else {
-            history.push(`/halamanakunlain/${key}`);
-        }
-
+        } 
+        if ( !loginStatus ) history.push(`/halamanakunlain/${key}`);
     }
 
 
@@ -109,11 +94,9 @@ const HalamanEksplor = () => {
         <div className="halamaneksplor-container">
             <SearchBar onChangeCariResep={onChangeCariResep} onCariResep={onCariResep} value={search} />
 
-            {/* when recipes available */}
             {recipes && (
             <div className="halamaneksplor-grid">
 
-                {/* mapping recipes */}
                 {recipes.map(recipe => (
                 <RecipeCard key={recipe.postId} recipe={recipe} lihatAkun={lihatAkun} lihatResep={lihatResep} />
                 ))}
@@ -121,7 +104,6 @@ const HalamanEksplor = () => {
             </div>
             )}
 
-            {/* when recipes are not available */}
             {!skeleton && (
             <div className="halamaneksplor-grid">
                 <RecipeCardSkeleton />

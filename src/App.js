@@ -39,14 +39,14 @@ const App = () => {
                             setUserLoginData(data);
                             setUserLoginStatus(true);
                             setReadyToRender(true);
-                            history.push(`/halamanutama/${data.uid}`);
+                            history.replace('/');
                         }
                     });
             } else {
                 localStorage.setItem("userLoginStatus", JSON.stringify(false));
                 setUserLoginStatus(false);
                 setReadyToRender(true);
-                history.push("/halamaneksplor/undifined");
+                history.replace("/eksplor");
             }
         });
     }

@@ -13,9 +13,9 @@ const HalamanUtama = () => {
 
 
     useEffect(() => {
-        if (loginStatus === false) history.replace("/halamaneksplor/undifined");
+        if (!loginStatus) history.replace("/eksplor");
 
-        if (loginStatus === true) {
+        if (loginStatus) {
             document.title = "Kossep";
             getRecipes();
         }
@@ -86,7 +86,7 @@ const HalamanUtama = () => {
                 </div>
 
                 <div className="halamanutama-button">
-                    <div className='halamanutama-button-explore' onClick={() => history.push(`/halamaneksplor/${dataUser.uid}`)}>
+                    <div className='halamanutama-button-explore' onClick={() => history.push('/eksplor')}>
                         <i className='bx bx-outline'></i><p>Explore</p>
                     </div>
 
