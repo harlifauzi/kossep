@@ -2,10 +2,10 @@ import React, { useEffect, useState } from 'react';
 import { useHistory, useParams } from 'react-router-dom';
 import { Firebase } from '../../config';
 import { Button } from "react-bootstrap";
-import "bootstrap/dist/css/bootstrap.min.css";
 import Snackbar from "@material-ui/core/Snackbar";
 import MuiAlert from "@material-ui/lab/Alert";
 import { RecipeCard } from '../../components';
+import { useSelector } from 'react-redux';
 
 // <snackbar function>
 function Alert(props) {
@@ -16,9 +16,7 @@ function Alert(props) {
 const HalamanAkunLain = () => {
 	const params = useParams();
     const history = useHistory();
-    const getMyData = localStorage.getItem("user");
-    const userLoginStatus = localStorage.getItem("userLoginStatus");
-    const myData = JSON.parse(getMyData);
+    const { loginStatus, dataUser } = useSelector(state => state);
 
 	const [userData, setUserData] = useState({});
     const [posts, setPosts] = useState([]);
@@ -121,8 +119,8 @@ const HalamanAkunLain = () => {
             console.log({otherUserDataFollowers: data})
             setFollowers(data);
             
-            if (userLoginStatus === "true"){
-                if(data.includes(myData.uid)){
+            if ( loginStatus ){
+                if(data.includes(dataUser.uid)){
                     setFollowStatus(true);
                 } else {
                     setFollowStatus(false);
@@ -141,21 +139,21 @@ const HalamanAkunLain = () => {
     
     // function when follow / unfollow button clicked
 	const onFollow = (userId) => {
-        if(userLoginStatus === "true"){
-            if(followers.includes(myData.uid)){
+        if( loginStatus ){
+            if(followers.includes(dataUser.uid)){
 
                 // remove my uid on other user followers document
                 Firebase.database()
-                .ref(`users/${userData.uid}/followers/${myData.uid}/`)
+                .ref(`users/${userData.uid}/followers/${dataUser.uid}/`)
                 .remove();
     
                 // remove other user uid on my following document
                 Firebase.database()
-                .ref(`users/${myData.uid}/following/${userData.uid}/`)
+                .ref(`users/${dataUser.uid}/following/${userData.uid}/`)
                 .remove();
     
                 // define my uid position on followers state
-                const position = followers.indexOf(myData.uid)
+                const position = followers.indexOf(dataUser.uid)
     
                 // remove my uid on followers state base on position const
                 followers.splice(position, 1)
@@ -165,9 +163,9 @@ const HalamanAkunLain = () => {
     
             } else {
                 const myImportantData = {
-                    namaLengkap: myData.namaLengkap,
-                    email: myData.alamatEmail,
-                    uid: myData.uid
+                    namaLengkap: dataUser.namaLengkap,
+                    email: dataUser.alamatEmail,
+                    uid: dataUser.uid
                 }
     
                 const userImportantData = {
@@ -178,16 +176,16 @@ const HalamanAkunLain = () => {
     
                 // add my uid to other user followers document
                 Firebase.database()
-                .ref(`users/${userData.uid}/followers/${myData.uid}/`)
+                .ref(`users/${userData.uid}/followers/${dataUser.uid}/`)
                 .set(myImportantData)
     
                 // add other user uid to my following document
                 Firebase.database()
-                .ref(`users/${myData.uid}/following/${userData.uid}`)
+                .ref(`users/${dataUser.uid}/following/${userData.uid}`)
                 .set(userImportantData);
     
                 // add my uid to followers state
-                followers.push(myData.uid)
+                followers.push(dataUser.uid)
     
                 // set followStatus state to true
                 setFollowStatus(!followStatus)
