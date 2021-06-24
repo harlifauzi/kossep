@@ -10,6 +10,7 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import { makeStyles } from '@material-ui/core/styles';
 import Snackbar from '@material-ui/core/Snackbar';
 import MuiAlert from '@material-ui/lab/Alert';
+import { useSelector } from "react-redux";
 
 
 // backdrop
@@ -49,6 +50,7 @@ const Recook = () => {
 
     const params = useParams();
     const history = useHistory();
+    const { dataUser, loginStatus } = useSelector(state => state);
     const uploadPhoto = useRef();
     const [currentRecipe, setCurrentRecipe] = useState();
     const [judul, setJudul] = useState("");
@@ -69,7 +71,7 @@ const Recook = () => {
         langkah,
         biaya,
         urlPhoto,
-        chef: JSON.parse(localStorage.getItem("user")),
+        chef: dataUser,
         waktuPost: '',
         timestamp: '',
         recookFrom: currentRecipe,
@@ -77,6 +79,8 @@ const Recook = () => {
 
 
     useEffect(() => {
+        if ( !loginStatus ) history.replace('/eksplor');
+
         // get recipe data for recok
         Firebase.database()
             .ref(`posts/${params.key}/`)

@@ -51,7 +51,6 @@ const BuatResep = () => {
 
     const uploadPhoto = useRef();
     const history = useHistory();
-
     const [judul, setJudul] = useState('');
     const [cerita, setCerita] = useState('');
     const [waktu, setWaktu] = useState('');
@@ -59,7 +58,7 @@ const BuatResep = () => {
     const [langkah, setLangkah] = useState([{item: ''}]);
     const [biaya, setBiaya] = useState('');
     const [urlPhoto, setUrlPhoto] = useState('');
-    const { dataUser } = useSelector(state => state);
+    const { dataUser, loginStatus } = useSelector(state => state);
 
     const [photo, setPhoto] = useState("");
     const resep = {
@@ -79,6 +78,8 @@ const BuatResep = () => {
 
     // firing when photo state change
     useEffect(() => {
+        if ( !loginStatus ) history.replace('eksplor');
+
         document.title = "Kossep | Buat resep";
         if (photo) {
             postImage();
